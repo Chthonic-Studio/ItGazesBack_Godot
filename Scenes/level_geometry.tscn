@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://2gdt4du0ccnq"]
+
+[ext_resource type="Script" uid="uid://csjp0kfo01uab" path="res://Scenes/level_geometry.gd" id="1_at16h"]
+
+[node name="LevelGeometry" type="Node2D"]
+script = ExtResource("1_at16h")

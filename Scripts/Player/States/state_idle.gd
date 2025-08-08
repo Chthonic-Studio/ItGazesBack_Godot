@@ -7,6 +7,7 @@ func _ready() -> void:
 
 func enter() -> void:
 	player.update_animation( "idle" )
+	player.velocity = Vector2.ZERO
 
 func exit() -> void:
 	pass
@@ -14,11 +15,11 @@ func exit() -> void:
 func process( _delta : float ) -> State:
 	if player.direction != Vector2.ZERO:
 		return walk
-	player.velocity = Vector2.ZERO
 	return null
 
 func physics( _delta : float ) -> State: 
-	return null	
+	player.velocity = player.velocity.move_toward(Vector2.ZERO, 500 * _delta)
+	return null
 
 func handle_input( _event : InputEvent ) -> State:
 	return null	

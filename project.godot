@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 LevelManager="*res://Scripts/Globals/level_manager.gd"
 SceneTransition="*res://Scenes/SceneTransition/scene_transition.gd"
+PlayerManager="*res://Scripts/Globals/player_manager.gd"
 
 [display]
 

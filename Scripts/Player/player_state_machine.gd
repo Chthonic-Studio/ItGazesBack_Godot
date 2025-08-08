@@ -1,16 +1,18 @@
 class_name PlayerStateMachine extends Node
 
-
 var states : Array [ State ]
 var prev_state : State
 var current_state : State
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_DISABLED
-	pass 
 
 func _process(delta: float) -> void:
 	change_state( current_state.process( delta ) )
+
+func _physics_process(delta: float) -> void:
+	if current_state:
+		change_state( current_state.physics(delta) )
 
 func _unhandled_input(event: InputEvent) -> void:
 	change_state( current_state.handle_input( event ) )
@@ -21,10 +23,11 @@ func initialize( _player : Player ) -> void:
 	for c in get_children():
 		if c is State:
 			states.append(c)
+			c.player = _player # Make sure player is assigned before entering state
 	
 	if states.size() > 0:
-		states[0].player = _player
-		change_state( states[0] )
+		current_state = states[0]
+		current_state.enter()
 		process_mode = Node.PROCESS_MODE_INHERIT
 
 func change_state( new_state : State ) -> void:
@@ -37,3 +40,8 @@ func change_state( new_state : State ) -> void:
 	prev_state = current_state
 	current_state = new_state
 	current_state.enter()
+
+# This function allows the player to request an animation update.
+func update_animation() -> void:
+	if current_state:
+		current_state.update_animation()

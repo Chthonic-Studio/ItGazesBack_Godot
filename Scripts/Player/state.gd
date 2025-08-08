@@ -12,6 +12,9 @@ func enter() -> void:
 func exit() -> void:
 	pass
 
+func update_animation() -> void:
+	pass
+
 func process( _delta : float ) -> State:
 	return null	
 
