@@ -24,10 +24,10 @@ position = Vector2(1430, 1012)
 [node name="Transitions" type="Node2D" parent="."]
 
 [node name="L1_1" parent="Transitions" instance=ExtResource("5_btxmh")]
-position = Vector2(1536, 973)
+position = Vector2(1537, 937)
 level = "uid://dr0y7kv0fb5yi"
 target_transition_area = "L1_Vents_1"
-side = 2
+side = 3
 
 [node name="L1_2" parent="Transitions" instance=ExtResource("5_btxmh")]
 position = Vector2(1539, 691)

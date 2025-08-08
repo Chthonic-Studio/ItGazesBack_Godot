@@ -28,6 +28,8 @@ func load_new_level(
 	
 	await get_tree().process_frame
 	
+	PlayerManager.unparent_player()
+	
 	get_tree().change_scene_to_file( level_path )
 	
 	await SceneTransition.fade_in()
