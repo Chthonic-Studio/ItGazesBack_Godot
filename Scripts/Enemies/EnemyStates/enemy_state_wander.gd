@@ -12,8 +12,6 @@ class_name EnemyStateWander extends EnemyState
 var _timer : float = 0.0
 var _direction : Vector2
 
-
-
 func init() -> void:
 	pass
 
@@ -21,11 +19,11 @@ func init() -> void:
 func enter() -> void:
 	_timer = randi_range( state_cycles_min, state_cycles_max ) * state_animation_duration
 	var rand = randi_range( 0, 3 )
-	_direction = enemy.DIR_4 [ rand ]
+	_direction = enemy.DIR_4[rand]
 	enemy.velocity = _direction * walk_speed
-	enemy.SetDirection ( _direction )
-	enemy.UpdateAnimation( anim_name )
-	pass
+	# Use the new, correct function names.
+	enemy.set_direction(_direction)
+	enemy.update_animation(anim_name)
 
 ## What happens when the player exists the state
 func exit() -> void:
@@ -40,4 +38,4 @@ func process( _delta: float ) -> EnemyState:
 
 ## What happens durings the _physics_update update in this state
 func physics( _delta: float ) -> EnemyState:
-	return null	
+	return null

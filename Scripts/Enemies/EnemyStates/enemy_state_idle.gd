@@ -9,8 +9,6 @@ class_name EnemyStateIdle extends EnemyState
 
 var _timer : float = 0.0
 
-
-
 func _init() -> void:
 	pass
 
@@ -18,8 +16,7 @@ func _init() -> void:
 func enter() -> void:
 	enemy.velocity = Vector2.ZERO
 	_timer = randf_range( state_duration_min, state_duration_max )
-	enemy.UpdateAnimation ( anim_name )
-	pass
+	enemy.update_animation(anim_name)
 
 ## What happens when the player exists the state
 func exit() -> void:
@@ -35,4 +32,4 @@ func process( _delta: float ) -> EnemyState:
 
 ## What happens durings the _physics_update update in this state
 func physics( _delta: float ) -> EnemyState:
-	return null	
+	return null
