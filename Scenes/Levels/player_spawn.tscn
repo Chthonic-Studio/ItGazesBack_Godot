@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://21rfh06vow1n"]
+
+[ext_resource type="Script" uid="uid://dp7c8kmreoekl" path="res://Scenes/Levels/Scripts/player_spawn.gd" id="1_2ydhn"]
+[ext_resource type="Texture2D" uid="uid://dca4tne0govku" path="res://Assets/Spritesheets/Quinn_IGB_20250805_224223/Idle.png" id="1_r7tkx"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2ydhn"]
+atlas = ExtResource("1_r7tkx")
+region = Rect2(162.715, 162.092, 58.1408, 67.7369)
+
+[node name="PlayerSpawn" type="Node2D"]
+script = ExtResource("1_2ydhn")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.309804, 1, 1, 1)
+texture = SubResource("AtlasTexture_2ydhn")

@@ -2660,6 +2660,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_41ojb"]
+radius = 16.0312
 
 [node name="CorruptedCrew1" type="CharacterBody2D"]
 collision_layer = 256
@@ -2678,6 +2679,7 @@ animation = &"run_left"
 [node name="Interactions" type="Node2D" parent="."]
 
 [node name="Hurtbox" parent="Interactions" instance=ExtResource("5_ld14b")]
+monitoring = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactions/Hurtbox"]
 shape = SubResource("CircleShape2D_41ojb")
@@ -2685,7 +2687,7 @@ shape = SubResource("CircleShape2D_41ojb")
 [node name="VisionArea" parent="Interactions" instance=ExtResource("6_41ojb")]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Interactions/VisionArea"]
-polygon = PackedVector2Array(-13, 11, -195, 124, -134, 194, -48, 235, 44, 235, 128, 195, 205, 151, 247, 112)
+polygon = PackedVector2Array(-16, 0, -41, -34, -256, 154, -60, 252, 68, 246, 252, 150, 34, -30, 17, 0)
 
 [node name="EnemyStateMachine" type="Node" parent="."]
 script = ExtResource("6_4rqfw")
