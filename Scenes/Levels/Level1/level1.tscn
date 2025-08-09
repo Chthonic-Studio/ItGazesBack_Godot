@@ -55,9 +55,10 @@ color = Color(0, 0, 0, 0.301961)
 blend_mode = 2
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(1588, 946)
+position = Vector2(1544.79, 944.723)
 rotation = -1.54124
-scale = Vector2(2.54708, 1.99636)
+scale = Vector2(2.54708, 2.73455)
+shadow_enabled = true
 texture = SubResource("GradientTexture2D_nqjqy")
 texture_scale = 1.83
 height = 254.0

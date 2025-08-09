@@ -25,10 +25,17 @@ func initialize( _player : Player ) -> void:
 			states.append(c)
 			c.player = _player # Make sure player is assigned before entering state
 	
-	if states.size() > 0:
-		current_state = states[0]
-		current_state.enter()
-		process_mode = Node.PROCESS_MODE_INHERIT
+	if states.size() == 0:
+		return
+	
+	current_state = states[0]
+	states[0].state_machine = self
+	
+	for state in states:
+		state.init()
+	
+	current_state.enter()
+	process_mode = Node.PROCESS_MODE_INHERIT
 
 func change_state( new_state : State ) -> void:
 	if new_state == null || new_state == current_state:

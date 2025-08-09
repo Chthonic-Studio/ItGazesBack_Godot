@@ -13,11 +13,13 @@ var direction : Vector2 = Vector2.ZERO
 @onready var state_machine: PlayerStateMachine = $StateMachine
 @onready var hitbox : HitBox = $HitBox
 
-signal player_damaged ( hurt_box : HurtBox )
+signal player_damaged ( damage_amount : int )
+signal damaged ()
 signal direction_changed ( new_direction : Vector2 )
 
 func _ready() -> void:
 	state_machine.initialize(self)
+	hitbox.damaged.connect(_take_damage)
 
 func _process( delta ):
 	# get_vector is perfect for 8-directional movement.
@@ -95,19 +97,19 @@ func update_animation( state : String ) -> void:
 		elif anim_dir.contains("right"):
 			sprite.play(state + "_right")
 
-func _take_damage( hurt_box : HurtBox ) -> void:
-	if invulnerable == true:
+func _take_damage( damage_amount: int ) -> void:
+	if invulnerable:
 		return
 		
-	update_hp( -hurt_box.damage )
-	print("_take_damage generates " + str(hurt_box.damage) + " damage" )
-	if hp > 0:
-		player_damaged.emit( hurt_box )
-		print("Emitting player_damaged as HP is above 0")
-	else:
-		player_damaged.emit( hurt_box )
-		update_hp( 99 )
-	pass
+	update_hp( -damage_amount )
+	player_damaged.emit( damage_amount )
+	damaged.emit()
+	
+	# For now, we'll just print the HP, but this is where you would
+	# add logic for player death when HP reaches 0.
+	if hp <= 0:
+		print("Player has been defeated!")
+		# Example: get_tree().reload_current_scene()
 	
 func update_hp( delta : int ) -> void:
 	hp = clampi( hp + delta, 0, max_hp )

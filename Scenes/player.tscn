@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://d3tbd5o864e5t"]
+[gd_scene load_steps=12 format=3 uid="uid://d3tbd5o864e5t"]
 
 [ext_resource type="Script" uid="uid://d3tw4qfi2rug" path="res://Scripts/Player/player.gd" id="1_cvnsp"]
 [ext_resource type="SpriteFrames" uid="uid://bdpjxkd6t88qd" path="res://Assets/Animations/player.tres" id="2_8erm5"]
 [ext_resource type="Script" uid="uid://d0jmc1u5oaomp" path="res://Scripts/Player/player_state_machine.gd" id="4_vgqql"]
 [ext_resource type="Script" uid="uid://ctmxowve77rln" path="res://Scripts/Player/States/state_idle.gd" id="5_fkybt"]
+[ext_resource type="Script" uid="uid://b8utrf1joouas" path="res://Scripts/Player/States/state_damaged.gd" id="6_f1ek2"]
 [ext_resource type="Script" uid="uid://3wqe3v862k6t" path="res://Scripts/Player/States/state_walk.gd" id="6_x3wgy"]
 [ext_resource type="Script" uid="uid://d34widsxn5hfv" path="res://Scripts/GeneralNodes/interactions.gd" id="7_8erm5"]
 [ext_resource type="Script" uid="uid://bxepfephpvx6g" path="res://Scripts/Player/player_camera.gd" id="7_f1ek2"]
@@ -29,7 +30,9 @@ shape = SubResource("CapsuleShape2D_0iro7")
 [node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(2, 1)
 sprite_frames = ExtResource("2_8erm5")
-animation = &"walk_up_right"
+animation = &"damaged_up_right"
+frame = 14
+frame_progress = 1.0
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("4_vgqql")
@@ -39,6 +42,9 @@ script = ExtResource("5_fkybt")
 
 [node name="Walk" type="Node" parent="StateMachine"]
 script = ExtResource("6_x3wgy")
+
+[node name="Damaged" type="Node" parent="StateMachine"]
+script = ExtResource("6_f1ek2")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("7_f1ek2")

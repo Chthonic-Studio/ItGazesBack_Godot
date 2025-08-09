@@ -2679,7 +2679,6 @@ animation = &"run_left"
 [node name="Interactions" type="Node2D" parent="."]
 
 [node name="Hurtbox" parent="Interactions" instance=ExtResource("5_ld14b")]
-collision_mask = 258
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactions/Hurtbox"]
 shape = SubResource("CircleShape2D_41ojb")
