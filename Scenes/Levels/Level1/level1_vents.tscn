@@ -57,15 +57,19 @@ frame_progress = 1.0
 [node name="LevelTransitions" type="Node2D" parent="."]
 
 [node name="L1_Vents_1" parent="LevelTransitions" instance=ExtResource("5_mefga")]
-position = Vector2(1425, 1074)
+position = Vector2(1426, 1067)
 level = "uid://br7074y5eje1b"
 target_transition_area = "L1_1"
 size = 1
-side = 2
+
+[node name="SpawnLocation" type="Marker2D" parent="LevelTransitions/L1_Vents_1"]
+position = Vector2(15, -51)
 
 [node name="L1_Vents_2" parent="LevelTransitions" instance=ExtResource("5_mefga")]
-position = Vector2(1421, 702)
+position = Vector2(1424, 717)
 level = "uid://br7074y5eje1b"
 target_transition_area = "L1_2"
 size = 1
-side = 3
+
+[node name="SpawnLocation" type="Marker2D" parent="LevelTransitions/L1_Vents_2"]
+position = Vector2(12, 50)

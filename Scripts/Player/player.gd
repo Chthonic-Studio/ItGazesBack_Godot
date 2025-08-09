@@ -3,6 +3,7 @@ class_name Player extends CharacterBody2D
 @export_category("Health")
 @export var max_hp : int = 6
 @export var hp : int = 6
+@export var invulnerable : bool = false
 
 # We'll store the last non-zero direction to keep facing the same way when idle.
 var last_direction : Vector2 = Vector2.DOWN
@@ -10,7 +11,9 @@ var direction : Vector2 = Vector2.ZERO
 
 @onready var sprite : AnimatedSprite2D = $PlayerSprite
 @onready var state_machine: PlayerStateMachine = $StateMachine
+@onready var hitbox : HitBox = $HitBox
 
+signal player_damaged ( hurt_box : HurtBox )
 signal direction_changed ( new_direction : Vector2 )
 
 func _ready() -> void:
@@ -91,3 +94,31 @@ func update_animation( state : String ) -> void:
 			sprite.play(state + "_left")
 		elif anim_dir.contains("right"):
 			sprite.play(state + "_right")
+
+func _take_damage( hurt_box : HurtBox ) -> void:
+	if invulnerable == true:
+		return
+		
+	update_hp( -hurt_box.damage )
+	print("_take_damage generates " + str(hurt_box.damage) + " damage" )
+	if hp > 0:
+		player_damaged.emit( hurt_box )
+		print("Emitting player_damaged as HP is above 0")
+	else:
+		player_damaged.emit( hurt_box )
+		update_hp( 99 )
+	pass
+	
+func update_hp( delta : int ) -> void:
+	hp = clampi( hp + delta, 0, max_hp )
+	print ("Player HP = " + str(hp))
+	pass
+	
+func make_invulnerable( _duration : float = 1.0 ) -> void:
+	invulnerable = true
+	hitbox.monitoring = false
+	
+	await get_tree().create_timer( _duration ).timeout
+	
+	invulnerable = false
+	hitbox.monitoring = true
