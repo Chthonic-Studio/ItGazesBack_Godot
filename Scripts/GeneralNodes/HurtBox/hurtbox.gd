@@ -10,5 +10,6 @@ func _process(delta: float) -> void:
 
 func AreaEntered( a : Area2D ) -> void:
 	if a is HitBox:
-		a.take_damage( damage )
+		# We now pass 'self' so the HitBox knows which HurtBox hit it.
+		a.take_damage( damage, self )
 	pass

@@ -14,7 +14,8 @@ var direction : Vector2 = Vector2.ZERO
 @onready var hitbox : HitBox = $HitBox
 
 signal player_damaged ( damage_amount : int )
-signal damaged ()
+# This signal will now carry the HurtBox reference to the state machine.
+signal damaged ( hurtbox : HurtBox )
 signal direction_changed ( new_direction : Vector2 )
 
 func _ready() -> void:
@@ -97,13 +98,15 @@ func update_animation( state : String ) -> void:
 		elif anim_dir.contains("right"):
 			sprite.play(state + "_right")
 
-func _take_damage( damage_amount: int ) -> void:
+# The function now accepts the hurtbox that dealt the damage.
+func _take_damage( damage_amount: int, hurtbox: HurtBox ) -> void:
 	if invulnerable:
 		return
 		
 	update_hp( -damage_amount )
 	player_damaged.emit( damage_amount )
-	damaged.emit()
+	# Emit the damaged signal with the hurtbox reference.
+	damaged.emit( hurtbox )
 	
 	# For now, we'll just print the HP, but this is where you would
 	# add logic for player death when HP reaches 0.
