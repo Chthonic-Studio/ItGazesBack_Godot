@@ -3,6 +3,7 @@ class_name PlayerStateMachine extends Node
 var states : Array [ State ]
 var prev_state : State
 var current_state : State
+var initial_state_name : String = ""
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_DISABLED
@@ -17,6 +18,9 @@ func _physics_process(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	change_state( current_state.handle_input( event ) )
 
+func set_initial_state(state_name: String) -> void:
+	initial_state_name = state_name
+
 func initialize( _player : Player ) -> void:
 	states = [ ]
 	
@@ -28,7 +32,12 @@ func initialize( _player : Player ) -> void:
 	if states.size() == 0:
 		return
 	
-	current_state = states[0]
+	# If an initial state was specified, use it. Otherwise, default to the first child.
+	if initial_state_name != "" and has_node(initial_state_name):
+		current_state = get_node(initial_state_name)
+	else:
+		current_state = states[0]
+		
 	states[0].state_machine = self
 	
 	for state in states:

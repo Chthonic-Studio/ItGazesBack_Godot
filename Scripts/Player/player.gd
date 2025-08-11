@@ -5,6 +5,19 @@ class_name Player extends CharacterBody2D
 @export var hp : int = 6
 @export var invulnerable : bool = false
 
+@export_category("State Booleans")
+# This is true when the player is in a crouch state. Controlled by the state machine.
+var is_crouched : bool = false:
+	set(value):
+		if is_crouched != value:
+			is_crouched = value
+			# Notify the PlayerManager so the state persists between scenes.
+			PlayerManager.is_crouched = value
+			crouch_toggled.emit(is_crouched)
+
+# This is used by levels to prevent the player from standing up (e.g., in vents).
+var can_stand_up : bool = true
+
 # We'll store the last non-zero direction to keep facing the same way when idle.
 var last_direction : Vector2 = Vector2.DOWN
 var direction : Vector2 = Vector2.ZERO
@@ -17,11 +30,17 @@ signal player_damaged ( damage_amount : int )
 # This signal will now carry the HurtBox reference to the state machine.
 signal damaged ( hurtbox : HurtBox )
 signal direction_changed ( new_direction : Vector2 )
+signal crouch_toggled( is_crouched : bool )
 
 func _ready() -> void:
 	state_machine.initialize(self)
 	hitbox.damaged.connect(_take_damage)
-
+	
+	if PlayerManager.is_crouched:
+		# We can't change state directly, as the state machine isn't ready.
+		# So we tell the state machine to start in the Crouch state instead of Idle.
+		state_machine.set_initial_state("Crouch")
+		
 func _process( delta ):
 	# get_vector is perfect for 8-directional movement.
 	# It automatically handles normalization, so the player doesn't move faster diagonally.
@@ -98,10 +117,22 @@ func update_animation( state : String ) -> void:
 		elif anim_dir.contains("right"):
 			sprite.play(state + "_right")
 
+# Called by the Level to force the player to crouch or allow them to stand.
+func set_forced_crouch(is_forced: bool) -> void:
+	can_stand_up = not is_forced
+	if is_forced and not is_crouched:
+		# Force the player into the crouch state if they aren't already.
+		state_machine.change_state(state_machine.get_node("Crouch"))
+
+
+
 # The function now accepts the hurtbox that dealt the damage.
 func _take_damage( damage_amount: int, hurtbox: HurtBox ) -> void:
 	if invulnerable:
 		return
+	
+	if is_crouched:
+		is_crouched = false
 		
 	update_hp( -damage_amount )
 	player_damaged.emit( damage_amount )

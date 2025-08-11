@@ -4,6 +4,8 @@ class_name State_Walk extends State
 @export var move_speed : float = 100.0
 
 @onready var idle: State = $"../Idle"
+@onready var run: State = $"../Run"
+@onready var crouch_run: State = $"../CrouchRun"
 
 func enter() -> void:
 	player.update_animation( "walk" )
@@ -15,7 +17,14 @@ func process( _delta : float ) -> State:
 	if player.direction == Vector2.ZERO:
 		return idle
 	
-	# Let the physics process handle movement
+		# Transition to Run state if run is pressed.
+	if Input.is_action_pressed("run"):
+		return run
+		
+	# Transition to CrouchRun state if crouch is toggled.
+	if Input.is_action_just_pressed("crouch") and player.can_stand_up:
+		return crouch_run
+		
 	return null
 
 func physics( _delta : float ) -> State:

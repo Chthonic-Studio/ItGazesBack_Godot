@@ -6,6 +6,7 @@ signal interact_pressed
 
 var player : Player 
 var player_spawned : bool = false
+var is_crouched : bool = false
 
 func _ready() -> void:
 	add_player_instance()

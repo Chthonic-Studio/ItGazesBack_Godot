@@ -72,4 +72,4 @@ target_transition_area = "L1_2"
 size = 1
 
 [node name="SpawnLocation" type="Marker2D" parent="LevelTransitions/L1_Vents_2"]
-position = Vector2(12, 50)
+position = Vector2(36, 55)

@@ -1,6 +1,7 @@
 class_name State_Idle extends State
 
 @onready var walk : State = $"../Walk"
+@onready var crouch : State = $"../Crouch"
 
 func _ready() -> void:
 	pass 
@@ -15,6 +16,11 @@ func exit() -> void:
 func process( _delta : float ) -> State:
 	if player.direction != Vector2.ZERO:
 		return walk
+	
+	# Transition to crouch state if the crouch button is pressed.
+	if Input.is_action_just_pressed("crouch") and player.can_stand_up:
+		return crouch
+		
 	return null
 
 func physics( _delta : float ) -> State: 
