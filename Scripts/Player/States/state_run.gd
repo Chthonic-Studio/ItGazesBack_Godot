@@ -26,5 +26,9 @@ func process(_delta: float) -> State:
 
 func physics(_delta: float) -> State:
 	player.velocity = player.direction * run_speed
+	# This call is correct and needs to stay. It detects when the direction changes.
 	player.update_animation_direction()
 	return null
+
+func update_animation() -> void:
+	player.update_animation("run")
