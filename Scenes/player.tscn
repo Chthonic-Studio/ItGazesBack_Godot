@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://d3tbd5o864e5t"]
+[gd_scene load_steps=16 format=3 uid="uid://d3tbd5o864e5t"]
 
 [ext_resource type="Script" uid="uid://d3tw4qfi2rug" path="res://Scripts/Player/player.gd" id="1_cvnsp"]
 [ext_resource type="SpriteFrames" uid="uid://bdpjxkd6t88qd" path="res://Assets/Animations/player.tres" id="2_8erm5"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://b3st033b6ln2g" path="res://Scripts/GeneralNodes/HitBox/hitbox.tscn" id="8_f1ek2"]
 [ext_resource type="Script" uid="uid://dmt316e1tt6dn" path="res://Scripts/Player/States/state_crouch.gd" id="8_gymyn"]
 [ext_resource type="Script" uid="uid://c78jxfp8ufm2n" path="res://Scripts/Player/States/state_crouch_run.gd" id="9_pu2lt"]
+[ext_resource type="Script" uid="uid://b8kuib53w0ves" path="res://Scripts/Player/States/state_hidden.gd" id="10_ukyrk"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0iro7"]
 radius = 11.0
@@ -56,6 +57,9 @@ script = ExtResource("8_gymyn")
 
 [node name="CrouchRun" type="Node" parent="StateMachine"]
 script = ExtResource("9_pu2lt")
+
+[node name="Hidden" type="Node" parent="StateMachine"]
+script = ExtResource("10_ukyrk")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("7_f1ek2")
