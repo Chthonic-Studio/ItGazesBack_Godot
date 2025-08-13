@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://cqos30hrusqn8"]
+
+[ext_resource type="Script" uid="uid://cdqb36qo80dx8" path="res://Scenes/Levels/wall_light.gd" id="1_mumth"]
+[ext_resource type="Script" uid="uid://brxggk3i0dy65" path="res://Scenes/Levels/light_flicker.gd" id="1_pcvwy"]
+
+[sub_resource type="Gradient" id="Gradient_mumth"]
+offsets = PackedFloat32Array(0, 0.255411, 0.441558, 0.636364, 0.831169, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.796537, 0.796537, 0.796537, 1, 0.593074, 0.593074, 0.593074, 1, 0.363636, 0.363636, 0.363636, 1, 0.251082, 0.251082, 0.251082, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_rbywl"]
+gradient = SubResource("Gradient_mumth")
+width = 264
+height = 264
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 1)
+
+[node name="WallLight" type="Node2D"]
+script = ExtResource("1_mumth")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+texture = SubResource("GradientTexture2D_rbywl")
+script = ExtResource("1_pcvwy")

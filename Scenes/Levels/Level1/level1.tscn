@@ -1,21 +1,19 @@
-[gd_scene load_steps=8 format=4 uid="uid://br7074y5eje1b"]
+[gd_scene load_steps=7 format=4 uid="uid://br7074y5eje1b"]
 
 [ext_resource type="PackedScene" uid="uid://d23kam0h3tvtd" path="res://Scenes/ground_tiles.tscn" id="1_asbk5"]
 [ext_resource type="Script" uid="uid://chal8yif3p2fg" path="res://Scenes/Levels/level.gd" id="1_tmsqo"]
 [ext_resource type="PackedScene" uid="uid://2gdt4du0ccnq" path="res://Scenes/level_geometry.tscn" id="2_4qeik"]
 [ext_resource type="PackedScene" uid="uid://21rfh06vow1n" path="res://Scenes/Levels/player_spawn.tscn" id="2_47vy2"]
 [ext_resource type="PackedScene" uid="uid://bqmtmh0o5nl7j" path="res://Scenes/Levels/level_transition.tscn" id="5_btxmh"]
-
-[sub_resource type="Gradient" id="Gradient_btxmh"]
-offsets = PackedFloat32Array(0, 0.524064, 1)
-colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_nqjqy"]
-gradient = SubResource("Gradient_btxmh")
-use_hdr = true
+[ext_resource type="PackedScene" uid="uid://cqos30hrusqn8" path="res://Scenes/Levels/wall_light.tscn" id="6_nqjqy"]
 
 [node name="Level1" type="Node2D"]
 script = ExtResource("1_tmsqo")
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
+color = Color(0, 0, 0, 0.301961)
+blend_mode = 2
+max_distance = 90.0
 
 [node name="LevelGeometry" parent="." instance=ExtResource("2_4qeik")]
 
@@ -52,19 +50,7 @@ level = "uid://br7074y5eje1b"
 target_transition_area = "L1_Vents_2"
 
 [node name="SpawnLocation" type="Marker2D" parent="Transitions/L1_2"]
-position = Vector2(7, -52)
+position = Vector2(58, -59)
 
-[node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
-visible = false
-color = Color(0, 0, 0, 0.301961)
-blend_mode = 2
-max_distance = 90.0
-
-[node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(1516, 1013)
-scale = Vector2(2.54708, 1.48445)
-color = Color(0.619608, 0.882353, 0.619608, 1)
-shadow_enabled = true
-texture = SubResource("GradientTexture2D_nqjqy")
-texture_scale = 1.83
-height = 254.0
+[node name="WallLight" parent="." instance=ExtResource("6_nqjqy")]
+position = Vector2(1521, 934)
