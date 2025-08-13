@@ -13,9 +13,10 @@ func _ready() -> void:
 	body_exited.connect(_on_body_exited)
 	# The collision layer is set to detect the player (layer 1), and the mask is 0 because it doesn't need to be detected by anything.
 	collision_layer = 1
-	collision_mask = 0
+	collision_mask = 1
 
 func _on_body_entered(body: Node2D) -> void:
+	print("Player colliders with Interactable: " + name)
 	if body is Player:
 		# --- NEW ---
 		# If an animated sprite is assigned and has an "Open" animation, play it.
