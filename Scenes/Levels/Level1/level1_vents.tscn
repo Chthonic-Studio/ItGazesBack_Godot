@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://2gdt4du0ccnq" path="res://Scenes/level_geometry.tscn" id="2_mefga"]
 [ext_resource type="PackedScene" uid="uid://d23kam0h3tvtd" path="res://Scenes/ground_tiles.tscn" id="3_skskp"]
 [ext_resource type="Texture2D" uid="uid://ckwt6w6bxmyk" path="res://Assets/Vent1.png" id="4_2sy5t"]
-[ext_resource type="PackedScene" uid="uid://bqmtmh0o5nl7j" path="res://Scenes/Levels/level_transition.tscn" id="5_mefga"]
+[ext_resource type="PackedScene" uid="uid://bqmtmh0o5nl7j" path="res://Scenes/Levels/Addons/level_transition.tscn" id="5_mefga"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hjesa"]
 atlas = ExtResource("4_2sy5t")

@@ -11,6 +11,7 @@ signal anxiety_changed(new_anxiety)
 var player : Player 
 var player_spawned : bool = false
 var is_crouched : bool = false
+var spawn_hidden : bool = false
 
 # --- Player Mental State ---
 @export var max_sanity : int = 10

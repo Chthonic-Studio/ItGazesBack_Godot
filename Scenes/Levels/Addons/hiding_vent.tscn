@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://bbeaneey7ng0w"]
+
+[ext_resource type="Script" uid="uid://cfpagv6rcpcyk" path="res://Scenes/Levels/Addons/hiding_vent.gd" id="1_1wivm"]
+[ext_resource type="SpriteFrames" uid="uid://blfghnq231dkg" path="res://Scenes/Levels/Addons/vent_sprite_frame.tres" id="2_v87ex"]
+
+[node name="HidingVent" type="Area2D"]
+script = ExtResource("1_1wivm")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.7, 0.7)
+sprite_frames = ExtResource("2_v87ex")
+animation = &"Open"

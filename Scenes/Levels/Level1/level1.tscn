@@ -4,8 +4,8 @@
 [ext_resource type="Script" uid="uid://chal8yif3p2fg" path="res://Scenes/Levels/level.gd" id="1_tmsqo"]
 [ext_resource type="PackedScene" uid="uid://2gdt4du0ccnq" path="res://Scenes/level_geometry.tscn" id="2_4qeik"]
 [ext_resource type="PackedScene" uid="uid://21rfh06vow1n" path="res://Scenes/Levels/player_spawn.tscn" id="2_47vy2"]
-[ext_resource type="PackedScene" uid="uid://bqmtmh0o5nl7j" path="res://Scenes/Levels/level_transition.tscn" id="5_btxmh"]
-[ext_resource type="PackedScene" uid="uid://cqos30hrusqn8" path="res://Scenes/Levels/wall_light.tscn" id="6_nqjqy"]
+[ext_resource type="PackedScene" uid="uid://bqmtmh0o5nl7j" path="res://Scenes/Levels/Addons/level_transition.tscn" id="5_btxmh"]
+[ext_resource type="PackedScene" uid="uid://cqos30hrusqn8" path="res://Scenes/Levels/Addons/wall_light.tscn" id="6_nqjqy"]
 
 [node name="Level1" type="Node2D"]
 script = ExtResource("1_tmsqo")
@@ -35,19 +35,20 @@ position = Vector2(1430, 1012)
 [node name="Transitions" type="Node2D" parent="."]
 
 [node name="L1_1" parent="Transitions" instance=ExtResource("5_btxmh")]
-position = Vector2(1553, 950)
+position = Vector2(1555, 941)
 level = "uid://dr0y7kv0fb5yi"
 target_transition_area = "L1_Vents_1"
-size = 1
 is_vertical = true
 
 [node name="SpawnLocation" type="Marker2D" parent="Transitions/L1_1"]
 position = Vector2(26, 46)
 
 [node name="L1_2" parent="Transitions" instance=ExtResource("5_btxmh")]
-position = Vector2(1535, 709)
+visible = false
+position = Vector2(1553, 699)
 level = "uid://br7074y5eje1b"
 target_transition_area = "L1_Vents_2"
+is_vertical = true
 
 [node name="SpawnLocation" type="Marker2D" parent="Transitions/L1_2"]
 position = Vector2(58, -59)

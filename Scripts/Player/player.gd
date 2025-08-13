@@ -5,7 +5,6 @@ class_name Player extends CharacterBody2D
 @export var hp : int = 6
 @export var invulnerable : bool = false
 
-@export_category("State Booleans")
 # This is true when the player is in a crouch state. Controlled by the state machine.
 var is_crouched : bool = false:
 	set(value):
@@ -14,6 +13,8 @@ var is_crouched : bool = false:
 			# Notify the PlayerManager so the state persists between scenes.
 			PlayerManager.is_crouched = value
 			crouch_toggled.emit(is_crouched)
+## This flag makes the player undetectable by enemies.
+var is_hidden : bool = false
 
 # This is used by levels to prevent the player from standing up (e.g., in vents).
 var can_stand_up : bool = true
@@ -22,9 +23,14 @@ var can_stand_up : bool = true
 var last_direction : Vector2 = Vector2.DOWN
 var direction : Vector2 = Vector2.ZERO
 
+const PROMPT_SCENE = preload("res://GUI/interact_prompt.tscn")
+var _interaction_prompt: InteractionPrompt
+var _available_interactable: Interactable = null
+
 @onready var sprite : AnimatedSprite2D = $PlayerSprite
 @onready var state_machine: PlayerStateMachine = $StateMachine
 @onready var hitbox : HitBox = $HitBox
+@onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
 signal player_damaged ( damage_amount : int )
 # This signal will now carry the HurtBox reference to the state machine.
@@ -40,11 +46,27 @@ func _ready() -> void:
 		# We can't change state directly, as the state machine isn't ready.
 		# So we tell the state machine to start in the Crouch state instead of Idle.
 		state_machine.set_initial_state("Crouch")
+	
+	# Set up the interaction prompt.
+	_interaction_prompt = PROMPT_SCENE.instantiate()
+	add_child(_interaction_prompt)
+	# Position the prompt above the sprite.
+	_interaction_prompt.position.y = -sprite.sprite_frames.get_frame_texture("idle_down", 0).get_height() / 2 - 20
 		
 func _process( delta ):
 	# get_vector is perfect for 8-directional movement.
 	# It automatically handles normalization, so the player doesn't move faster diagonally.
 	direction = Input.get_vector("left", "right", "up", "down")
+
+	# Handle interaction input.
+	if Input.is_action_just_pressed("interact") and _available_interactable:
+		# If we are in the hidden state, we call a different function.
+		if is_hidden:
+			# This allows vents to have a secondary action, like transitioning level.
+			_available_interactable.on_hidden_interact(self)
+		else:
+			# Otherwise, perform the primary interaction.
+			_available_interactable.on_interact(self)
 	
 func _physics_process( delta ):
 	# This function's only job is to execute the movement based on the 
@@ -158,3 +180,45 @@ func make_invulnerable( _duration : float = 1.0 ) -> void:
 	
 	invulnerable = false
 	hitbox.monitoring = true
+
+
+#region Interactable
+
+# These functions are called by the Interactable's signals.
+func on_interactable_entered(interactable: Interactable):
+	_available_interactable = interactable
+	_interaction_prompt.set_text(interactable.get_prompt_text())
+	_interaction_prompt.show_prompt()
+
+func on_interactable_exited(interactable: Interactable):
+	# Make sure we are not exiting a different interactable than the one we have stored.
+	if _available_interactable == interactable:
+		_available_interactable = null
+		_interaction_prompt.hide_prompt()
+		
+# Called by the Hidden state to update the prompt text (e.g. from "Enter" to "Go In").
+func update_hidden_prompt():
+	if _available_interactable:
+		var hidden_text = _available_interactable.get_hidden_prompt_text()
+		if hidden_text != "":
+			_interaction_prompt.set_text(hidden_text)
+			_interaction_prompt.show_prompt()
+		else:
+			_interaction_prompt.hide_prompt()
+
+# Called by the Hidden state to make the player visible/invisible and toggle collision.
+func set_hidden_state(is_entering_hidden_state: bool):
+	is_hidden = is_entering_hidden_state
+	sprite.visible = not is_entering_hidden_state
+	collision_shape.disabled = is_entering_hidden_state
+
+## Called by LevelTransition when the player spawns in a new level from a vent.
+func enter_hidden_state_on_spawn(interactable: Interactable):
+	# We need to manually set the available interactable because the player
+	# hasn't triggered the Area2D in the new scene yet. This ensures
+	# they can interact again (e.g., to leave the vent).
+	_available_interactable = interactable
+	# Force the state change to Hidden.
+	state_machine.change_state(state_machine.get_node("Hidden"))
+
+#endregion
