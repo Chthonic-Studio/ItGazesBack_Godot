@@ -52,5 +52,16 @@ target_transition_area = "L1_Vents_2"
 [node name="SpawnLocation" type="Marker2D" parent="Transitions/L1_2"]
 position = Vector2(58, -59)
 
-[node name="WallLight" parent="." instance=ExtResource("6_nqjqy")]
-position = Vector2(1521, 934)
+[node name="Lights" type="Node2D" parent="."]
+
+[node name="WallLight" parent="Lights" instance=ExtResource("6_nqjqy")]
+position = Vector2(1521, 1010)
+light_color = Color(0.509804, 1, 0.45098, 1)
+flicker_speed = 1.0
+
+[node name="WallLight2" parent="Lights" instance=ExtResource("6_nqjqy")]
+position = Vector2(1332, 996)
+light_color = Color(1, 0.45, 0.45, 1)
+flicker_type = 1
+flicker_speed = 1.0
+blink_randomness = 0.65
