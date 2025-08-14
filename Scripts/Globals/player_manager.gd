@@ -14,7 +14,7 @@ var is_crouched : bool = false
 var spawn_hidden : bool = false
 
 # --- Player Mental State ---
-@export var max_sanity : int = 10
+var max_sanity : int = 10
 var sanity : int = 10:
 	set(value):
 		# Ensure sanity value is always clamped between 0 and max_sanity.
@@ -22,7 +22,7 @@ var sanity : int = 10:
 		# Emit the signal so UI or other systems can react.
 		sanity_changed.emit(sanity)
 
-@export var max_anxiety : int = 10
+var max_anxiety : int = 10
 var anxiety : int = 10:
 	set(value):
 		# Ensure anxiety value is always clamped between 0 and max_anxiety.

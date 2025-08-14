@@ -5,6 +5,10 @@ class_name HidingVent extends Interactable
 # but there is no secondary action (like transitioning levels).
 
 func _ready() -> void:
+	# --- REASON FOR CHANGE ---
+	# Call the parent's _ready() function to ensure the body_entered signal is connected.
+	super()
+	
 	# Connect to the base class signals.
 	player_entered.connect(_on_player_entered)
 	player_exited.connect(_on_player_exited)

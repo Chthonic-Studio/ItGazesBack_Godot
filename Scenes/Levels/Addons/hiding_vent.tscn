@@ -1,12 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://bbeaneey7ng0w"]
+[gd_scene load_steps=4 format=3 uid="uid://bbeaneey7ng0w"]
 
 [ext_resource type="Script" uid="uid://cfpagv6rcpcyk" path="res://Scenes/Levels/Addons/hiding_vent.gd" id="1_1wivm"]
 [ext_resource type="SpriteFrames" uid="uid://blfghnq231dkg" path="res://Scenes/Levels/Addons/vent_sprite_frame.tres" id="2_v87ex"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v87ex"]
+size = Vector2(32, 64)
+
 [node name="HidingVent" type="Area2D"]
+position = Vector2(0, 1)
+collision_mask = 9
 script = ExtResource("1_1wivm")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.7, 0.7)
 sprite_frames = ExtResource("2_v87ex")
 animation = &"Open"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_v87ex")
+debug_color = Color(0.823529, 0.254902, 0.764706, 0.188235)

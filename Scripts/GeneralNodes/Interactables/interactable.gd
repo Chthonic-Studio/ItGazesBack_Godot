@@ -11,12 +11,17 @@ func _ready() -> void:
 	# Connect the Area2D signals to our own functions.
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
-	# The collision layer is set to detect the player (layer 1), and the mask is 0 because it doesn't need to be detected by anything.
-	collision_layer = 1
-	collision_mask = 1
+	# This lets us know the interactable is in the scene and ready.
+	print("DEBUG: Interactable '", name, "' is ready.")
+
 
 func _on_body_entered(body: Node2D) -> void:
-	print("Player colliders with Interactable: " + name)
+	# --- REASON FOR CHANGE ---
+	# This is our most important debug print. It will tell us if the Area2D is detecting
+	# a collision with ANY physics body. If this print does not appear, the core problem
+	# is with the physics engine's collision detection.
+	print("DEBUG: Interactable '", name, "' detected body: ", body.name)
+	
 	if body is Player:
 		# --- NEW ---
 		# If an animated sprite is assigned and has an "Open" animation, play it.

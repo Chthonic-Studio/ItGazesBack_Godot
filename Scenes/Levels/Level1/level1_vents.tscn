@@ -37,6 +37,7 @@ animations = [{
 
 [node name="Level1Vents" type="Node2D"]
 script = ExtResource("1_03s1y")
+force_crouch = true
 
 [node name="LevelGeometry" parent="." instance=ExtResource("2_mefga")]
 
@@ -57,9 +58,10 @@ frame_progress = 1.0
 [node name="LevelTransitions" type="Node2D" parent="."]
 
 [node name="L1_Vents_1" parent="LevelTransitions" instance=ExtResource("5_mefga")]
-position = Vector2(1426, 1067)
+position = Vector2(1425, 1067)
 level = "uid://br7074y5eje1b"
 target_transition_area = "L1_1"
+is_hiding_spot = true
 size = 1
 
 [node name="SpawnLocation" type="Marker2D" parent="LevelTransitions/L1_Vents_1"]
@@ -69,7 +71,8 @@ position = Vector2(15, -51)
 position = Vector2(1424, 717)
 level = "uid://br7074y5eje1b"
 target_transition_area = "L1_2"
+is_hiding_spot = true
 size = 1
 
 [node name="SpawnLocation" type="Marker2D" parent="LevelTransitions/L1_Vents_2"]
-position = Vector2(36, 55)
+position = Vector2(-1, 37)

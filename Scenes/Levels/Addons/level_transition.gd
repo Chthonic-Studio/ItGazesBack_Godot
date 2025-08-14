@@ -6,7 +6,6 @@ class_name LevelTransition extends Interactable
 @export var is_hiding_spot : bool = false
 
 @export_category("Collision Area Settings")
-# ... (size, is_vertical, snap_to_grid exports are unchanged) ...
 @export_range(1,12,1, "or_greater") var size : int = 2 : 
 	set( _v ):
 		size = _v
@@ -28,11 +27,14 @@ class_name LevelTransition extends Interactable
 @onready var spawn_location : Marker2D = $SpawnLocation
 
 func _ready() -> void:
+	super()
 	player_entered.connect(_on_player_entered)
 	player_exited.connect(_on_player_exited)
 	_update_area()
 	if Engine.is_editor_hint():
 		return
+	# We now wait a frame to ensure the player is ready before placing them.
+	await get_tree().process_frame
 	_place_player()
 	
 func _on_player_entered(interactable: Interactable) -> void:
@@ -45,28 +47,39 @@ func _on_player_exited(interactable: Interactable) -> void:
 	if player:
 		player.on_interactable_exited(self)
 
+# This function is called for the FIRST interaction.
 func on_interact(player: Player) -> void:
 	if is_hiding_spot:
+		# If it's a hiding spot, the first action is to enter the Hidden state.
 		player.state_machine.change_state(player.state_machine.get_node("Hidden"))
 	else:
+		# If it's not a hiding spot, we transition immediately.
 		_transition_level()
 
+# --- REASON FOR CHANGE ---
+# This function is called when the player interacts WHILE ALREADY HIDDEN.
+# This is our second action.
 func on_hidden_interact(player: Player) -> void:
-	# --- REASON FOR CHANGE ---
-	# Before transitioning, we set the flag in the PlayerManager.
-	# This tells the system to spawn the player in the hidden state in the next level.
+	# If it's a hiding spot, the second action is to transition.
 	if is_hiding_spot:
+		# We set the global flag to true BEFORE loading the new level.
 		PlayerManager.spawn_hidden = true
+	# Now, we transition.
 	_transition_level()
 
+# --- REASON FOR CHANGE ---
+# This function provides the prompt text for when the player is hidden.
 func get_hidden_prompt_text() -> String:
 	if is_hiding_spot:
-		return "Go In"
+		# If we can transition from here, the prompt changes.
+		return "Go inside"
+	# If it's not a hiding spot, there's no action while hidden.
 	return ""
 
 func _transition_level():
 	LevelManager.load_new_level( level, target_transition_area )
 
+# This function places the player when a new level loads.
 func _place_player() -> void:
 	if name != LevelManager.target_transition:
 		return
@@ -76,15 +89,15 @@ func _place_player() -> void:
 		return
 	
 	var player = PlayerManager.player
-	# --- REASON FOR CHANGE ---
-	# We now set the player's position directly here.
 	player.global_position = spawn_location.global_position
 	
-	# After positioning the player, check if they should spawn hidden.
+	# --- REASON FOR CHANGE ---
+	# After placing the player, we check the global flag.
 	if PlayerManager.spawn_hidden:
-		# Tell the player to enter the hidden state inside THIS interactable.
+		# If the flag is true, we call a new function on the player to force them
+		# into the hidden state within this interactable.
 		player.enter_hidden_state_on_spawn(self)
-		# Reset the flag so it doesn't persist for the next transition.
+		# We must reset the flag so it doesn't affect future transitions.
 		PlayerManager.spawn_hidden = false
 
 func _update_area() -> void:

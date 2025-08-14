@@ -51,7 +51,7 @@ func _ready() -> void:
 	_interaction_prompt = PROMPT_SCENE.instantiate()
 	add_child(_interaction_prompt)
 	# Position the prompt above the sprite.
-	_interaction_prompt.position.y = -sprite.sprite_frames.get_frame_texture("idle_down", 0).get_height() / 2 - 20
+	_interaction_prompt.position.y = -sprite.sprite_frames.get_frame_texture("idle_down", 0).get_height() / 2 - 10
 		
 func _process( delta ):
 	# get_vector is perfect for 8-directional movement.
@@ -210,15 +210,11 @@ func update_hidden_prompt():
 func set_hidden_state(is_entering_hidden_state: bool):
 	is_hidden = is_entering_hidden_state
 	sprite.visible = not is_entering_hidden_state
-	collision_shape.disabled = is_entering_hidden_state
 
 ## Called by LevelTransition when the player spawns in a new level from a vent.
 func enter_hidden_state_on_spawn(interactable: Interactable):
-	# We need to manually set the available interactable because the player
-	# hasn't triggered the Area2D in the new scene yet. This ensures
-	# they can interact again (e.g., to leave the vent).
 	_available_interactable = interactable
-	# Force the state change to Hidden.
 	state_machine.change_state(state_machine.get_node("Hidden"))
+
 
 #endregion

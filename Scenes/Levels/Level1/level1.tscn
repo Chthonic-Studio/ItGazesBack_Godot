@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=4 uid="uid://br7074y5eje1b"]
+[gd_scene load_steps=8 format=4 uid="uid://br7074y5eje1b"]
 
 [ext_resource type="PackedScene" uid="uid://d23kam0h3tvtd" path="res://Scenes/ground_tiles.tscn" id="1_asbk5"]
 [ext_resource type="Script" uid="uid://chal8yif3p2fg" path="res://Scenes/Levels/level.gd" id="1_tmsqo"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://21rfh06vow1n" path="res://Scenes/Levels/player_spawn.tscn" id="2_47vy2"]
 [ext_resource type="PackedScene" uid="uid://bqmtmh0o5nl7j" path="res://Scenes/Levels/Addons/level_transition.tscn" id="5_btxmh"]
 [ext_resource type="PackedScene" uid="uid://cqos30hrusqn8" path="res://Scenes/Levels/Addons/wall_light.tscn" id="6_nqjqy"]
+[ext_resource type="PackedScene" uid="uid://bbeaneey7ng0w" path="res://Scenes/Levels/Addons/hiding_vent.tscn" id="7_hf8m8"]
 
 [node name="Level1" type="Node2D"]
 script = ExtResource("1_tmsqo")
@@ -38,20 +39,21 @@ position = Vector2(1430, 1012)
 position = Vector2(1555, 941)
 level = "uid://dr0y7kv0fb5yi"
 target_transition_area = "L1_Vents_1"
+is_hiding_spot = true
 is_vertical = true
 
 [node name="SpawnLocation" type="Marker2D" parent="Transitions/L1_1"]
 position = Vector2(26, 46)
 
 [node name="L1_2" parent="Transitions" instance=ExtResource("5_btxmh")]
-visible = false
 position = Vector2(1553, 699)
-level = "uid://br7074y5eje1b"
+level = "uid://dr0y7kv0fb5yi"
 target_transition_area = "L1_Vents_2"
+is_hiding_spot = true
 is_vertical = true
 
 [node name="SpawnLocation" type="Marker2D" parent="Transitions/L1_2"]
-position = Vector2(58, -59)
+position = Vector2(-4, -34)
 
 [node name="Lights" type="Node2D" parent="."]
 
@@ -66,3 +68,8 @@ light_color = Color(1, 0.45, 0.45, 1)
 flicker_type = 1
 flicker_speed = 1.0
 blink_randomness = 0.65
+
+[node name="HidingSpots" type="Node2D" parent="."]
+
+[node name="HidingVent" parent="HidingSpots" instance=ExtResource("7_hf8m8")]
+position = Vector2(1199, 945)
