@@ -12,7 +12,7 @@
 script = ExtResource("1_tmsqo")
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
-color = Color(0, 0, 0, 0.301961)
+color = Color(0, 0, 0, 0.654902)
 blend_mode = 2
 max_distance = 90.0
 
@@ -60,11 +60,13 @@ position = Vector2(-4, -34)
 [node name="WallLight" parent="Lights" instance=ExtResource("6_nqjqy")]
 position = Vector2(1521, 1010)
 light_color = Color(0.509804, 1, 0.45098, 1)
+energy = 2.8
 flicker_speed = 1.0
 
 [node name="WallLight2" parent="Lights" instance=ExtResource("6_nqjqy")]
 position = Vector2(1332, 996)
 light_color = Color(1, 0.45, 0.45, 1)
+energy = 1.2
 flicker_type = 1
 flicker_speed = 1.0
 blink_randomness = 0.65
