@@ -6,17 +6,12 @@ signal level_loaded
 
 var current_tilemap_bounds : Array [ Vector2 ]
 var target_transition : String
-# --- REASON FOR CHANGE ---
-# This variable is no longer needed, as the spawn position is now handled
-# directly by the destination LevelTransition node.
-# var position_offset : Vector2
+
 
 func _ready() -> void:
 	await get_tree().process_frame
 	level_loaded.emit()
 	
-# --- REASON FOR CHANGE ---
-# We remove the _position_offset parameter from the function signature.
 func load_new_level( 
 		level_path : String, 
 		_target_transition : String
@@ -24,24 +19,33 @@ func load_new_level(
 	
 	get_tree().paused = true
 	target_transition = _target_transition
-	# position_offset = _position_offset # This line is removed.
+	
+	# --- REASON FOR CHANGE ---
+	# This line has been REMOVED. Resetting the state here was incorrect because
+	# it happened before the new level could apply its own rules. The Level script
+	# will now handle this logic correctly.
+	# if PlayerManager.player:
+	# 	PlayerManager.player.can_stand_up = true
+	
+	# We must unparent the player BEFORE the scene change to keep the instance alive.
+	PlayerManager.unparent_player()
 	
 	await SceneTransition.fade_out()
 	
 	level_load_started.emit()
 	
-	await get_tree().process_frame
-	
-	PlayerManager.unparent_player()
-	
+	# Change the scene. The old level is freed, but the player node (held by PlayerManager) persists.
 	get_tree().change_scene_to_file( level_path )
 	
+	# Now that the new scene is loaded, wait for the fade-in to complete.
 	await SceneTransition.fade_in()
 	
 	get_tree().paused = false 
 	
 	await get_tree().process_frame
 	
+	# The level_loaded signal will now be emitted by the new level itself,
+	# ensuring the player is parented at the correct time.
 	level_loaded.emit()
 	
 

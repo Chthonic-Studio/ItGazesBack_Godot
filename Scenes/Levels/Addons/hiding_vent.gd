@@ -5,7 +5,6 @@ class_name HidingVent extends Interactable
 # but there is no secondary action (like transitioning levels).
 
 func _ready() -> void:
-	# --- REASON FOR CHANGE ---
 	# Call the parent's _ready() function to ensure the body_entered signal is connected.
 	super()
 	
@@ -23,10 +22,20 @@ func _on_player_exited(interactable: Interactable) -> void:
 	if player:
 		player.on_interactable_exited(self)
 
-# When the player interacts, they enter the hidden state.
+# When the player interacts for the first time, they enter the hidden state.
 func on_interact(player: Player) -> void:
 	player.state_machine.change_state(player.state_machine.get_node("Hidden"))
+
+# --- REASON FOR CHANGE ---
+# When the player interacts while already hidden, we now call the new function
+# on the player to exit the hidden state. This is the second action.
+func on_hidden_interact(player: Player) -> void:
+	player.exit_hidden_state()
 
 # The prompt will say "Hide".
 func get_prompt_text() -> String:
 	return "Hide"
+	
+# The prompt will say "Exit".
+func get_hidden_prompt_text() -> String:
+	return "Exit"

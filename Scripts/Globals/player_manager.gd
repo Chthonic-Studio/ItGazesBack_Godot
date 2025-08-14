@@ -3,31 +3,28 @@ extends Node
 const PLAYER = preload("res://Scenes/player.tscn")
 
 signal interact_pressed
-# Signal to notify listeners when sanity changes.
 signal sanity_changed(new_sanity)
-# Signal to notify listeners when anxiety changes.
 signal anxiety_changed(new_anxiety)
 
 var player : Player 
 var player_spawned : bool = false
 var is_crouched : bool = false
 var spawn_hidden : bool = false
+var can_stand_up : bool = true
+
+var level_forces_crouch : bool = false
 
 # --- Player Mental State ---
 var max_sanity : int = 10
 var sanity : int = 10:
 	set(value):
-		# Ensure sanity value is always clamped between 0 and max_sanity.
 		sanity = clampi(value, 0, max_sanity)
-		# Emit the signal so UI or other systems can react.
 		sanity_changed.emit(sanity)
 
 var max_anxiety : int = 10
 var anxiety : int = 10:
 	set(value):
-		# Ensure anxiety value is always clamped between 0 and max_anxiety.
 		anxiety = clampi(value, 0, max_anxiety)
-		# Emit the signal so UI or other systems can react.
 		anxiety_changed.emit(anxiety)
 # ---------------------------
 
@@ -39,10 +36,14 @@ func _ready() -> void:
 func add_player_instance() -> void:
 	player = PLAYER.instantiate()
 	add_child( player )
+	if is_crouched:
+		player.state_machine.set_initial_state("crouch")
+	if can_stand_up == false:
+		player.state_machine.set_initial_state("crouch")
+	if level_forces_crouch == true:
+		player.state_machine.set_initial_state("crouch")
 
 # --- Public functions to modify mental state ---
-# Use these functions from other parts of the game to damage or restore sanity/anxiety.
-# Example: PlayerManager.update_sanity(-1) to decrease sanity by 1.
 func update_sanity(delta: int) -> void:
 	self.sanity += delta
 

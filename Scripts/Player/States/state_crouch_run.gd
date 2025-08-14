@@ -6,6 +6,9 @@ class_name State_CrouchRun extends State
 @onready var crouch: State = $"../Crouch"
 @onready var run: State = $"../Run"
 @onready var walk: State = $"../Walk"
+# --- REASON FOR CHANGE ---
+# We need a reference to the Hidden state for consistency in our exit logic.
+@onready var hidden: State = $"../Hidden"
 
 func enter() -> void:
 	player.is_crouched = true
@@ -13,8 +16,10 @@ func enter() -> void:
 	update_animation()
 
 func exit() -> void:
-	# We only stand up if the next state isn't the base Crouch state.
-	if not (state_machine.current_state is State_Crouch):
+	# --- REASON FOR CHANGE ---
+	# We add the same check as in the Crouch state. We should not stand up
+	# if the next state is one that preserves the crouch/hidden memory.
+	if not (state_machine.current_state is State_Crouch or state_machine.current_state == hidden):
 		player.is_crouched = false
 
 func process(_delta: float) -> State:
