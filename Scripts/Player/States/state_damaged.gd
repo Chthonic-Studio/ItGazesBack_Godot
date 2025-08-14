@@ -9,57 +9,48 @@ var _knockback_direction : Vector2
 var next_state : State = null
 
 @onready var idle: State_Idle = $"../Idle"
-
-
-func _ready() -> void:
-	pass
+@onready var crouch: State = $"../Crouch" # Added to restore forced crouch cleanly
 
 func init() -> void:
-	# Connect our new function to the player's damaged signal.
-	player.damaged.connect( _on_player_damaged )
+	player.damaged.connect(_on_player_damaged)
 
 func enter() -> void:
-	# This check prevents a crash if the state is entered incorrectly.
 	if not _hurtbox:
 		push_warning("Damaged state entered without a HurtBox!")
-		# Immediately transition to idle to prevent getting stuck.
 		state_machine.change_state(idle)
 		return
-		
+
 	player.update_animation("damaged")
-	player.sprite.animation_finished.connect( _animation_finished )
-	
-	# Calculate the knockback direction away from the HurtBox.
-	_knockback_direction = _hurtbox.global_position.direction_to( player.global_position )
+	player.sprite.animation_finished.connect(_animation_finished)
+
+	_knockback_direction = _hurtbox.global_position.direction_to(player.global_position)
 	player.velocity = _knockback_direction * knockback_speed
-	
-	# Update the player's facing direction to match the knockback.
+
 	player.last_direction = _knockback_direction.normalized()
-	player.update_animation("damaged") # Update animation to face correct direction
-	
-	player.make_invulnerable( invulnerable_duration )
-	
+	player.update_animation("damaged")
+	player.make_invulnerable(invulnerable_duration)
 
 func exit() -> void:
 	next_state = null
-	_hurtbox = null # Clear the hurtbox reference on exit.
+	_hurtbox = null
 	if player.sprite.is_connected("animation_finished", _animation_finished):
-		player.sprite.animation_finished.disconnect( _animation_finished )
-	
-func process( _delta : float ) -> State:
-	# Decelerate the knockback velocity over time.
+		player.sprite.animation_finished.disconnect(_animation_finished)
+
+func process(_delta: float) -> State:
 	player.velocity = player.velocity.move_toward(Vector2.ZERO, decelerate_speed)
 	return next_state
 
-func physics( _delta : float ) -> State:
+func physics(_delta: float) -> State:
 	return null
 
-# This function will be called by the player's 'damaged' signal.
-func _on_player_damaged( hurtbox : HurtBox ) -> void:
-	# Store the hurtbox that hit the player.
+func _on_player_damaged(hurtbox: HurtBox) -> void:
 	_hurtbox = hurtbox
-	# Change to this state.
 	state_machine.change_state(self)
-	
+
 func _animation_finished() -> void:
-	next_state = idle
+	# After damage, if area is forced -> return to crouch posture (apply_posture handles it),
+	# else go to idle (player may have uncrouched on damage).
+	if PlayerManager.level_forces_crouch or PlayerManager.crouch_preference:
+		next_state = crouch if (PlayerManager.level_forces_crouch or PlayerManager.crouch_preference) else idle
+	else:
+		next_state = idle

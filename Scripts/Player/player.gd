@@ -14,6 +14,10 @@ var is_crouched : bool = false:
 
 var is_hidden : bool = false
 
+var _temp_prompt_active: bool = false
+var _temp_prompt_saved_text: String = ""
+var _temp_prompt_timer: SceneTreeTimer
+
 var can_stand_up : bool = true:
 	set(value):
 		if can_stand_up != value:
@@ -37,28 +41,17 @@ signal damaged ( hurtbox : HurtBox )
 signal direction_changed ( new_direction : Vector2 )
 signal crouch_toggled( is_crouched : bool )
 
-# The player_ready signal is no longer needed with this new, simpler logic.
-# signal player_ready
-
 func _ready() -> void:
-	if PlayerManager.level_forces_crouch:
-		# If it does, we set both flags to ensure the player is crouched and cannot stand up.
-		self.is_crouched = true
-		self.can_stand_up = false
-	else:
-		# If the level is normal, we restore the player's previous crouch state
-		# and ensure they are allowed to stand up.
-		self.is_crouched = PlayerManager.is_crouched
-		self.can_stand_up = true
-
-	# 2. Initialize the state machine.
+	# 1. Decide starting crouch BEFORE initializing state machine (order critical).
+	var start_crouched : bool = PlayerManager.level_forces_crouch or PlayerManager.is_crouched
+	state_machine.set_initial_state("Crouch" if start_crouched else "Idle")
 	state_machine.initialize(self)
 	
-	# 3. Set the initial animation state based on the logic above.
-	if self.is_crouched:
-		state_machine.set_initial_state("Crouch")
+	# 2. Now set runtime posture flags (these may emit signals).
+	is_crouched = start_crouched
+	can_stand_up = not PlayerManager.level_forces_crouch
 	
-	# The rest of the setup proceeds as normal.
+	# 3. Hook damage & prompt.
 	hitbox.damaged.connect(_take_damage)
 	_interaction_prompt = PROMPT_SCENE.instantiate()
 	add_child(_interaction_prompt)
@@ -67,11 +60,44 @@ func _ready() -> void:
 func _process( delta ):
 	direction = Input.get_vector("left", "right", "up", "down")
 
+	# NEW: Auto‑invalidate stale interactable if we slipped out of its collider.
+	_check_interactable_overlap()
+
 	if Input.is_action_just_pressed("interact") and _available_interactable:
-		if is_hidden:
-			_available_interactable.on_hidden_interact(self)
+		# Safety: re‑check (edge case if overlap lost this frame).
+		if not _is_still_overlapping(_available_interactable):
+			_clear_interactable()
 		else:
-			_available_interactable.on_interact(self)
+			if is_hidden:
+				_available_interactable.on_hidden_interact(self)
+			else:
+				_available_interactable.on_interact(self)
+
+# --- NEW HELPERS (minimal prompt safety layer) -----------------
+
+# Returns true only if we are still physically overlapping the interactable's Area2D.
+func _is_still_overlapping(interactable: Interactable) -> bool:
+	if not interactable:
+		return false
+	if not is_instance_valid(interactable):
+		return false
+	if interactable is Area2D:
+		# get_overlapping_bodies() is cheap for small lists; ok per frame.
+		var bodies = (interactable as Area2D).get_overlapping_bodies()
+		return bodies.has(self)
+	return false
+
+# Per-frame guard: if no longer overlapping, clear and hide prompt.
+func _check_interactable_overlap() -> void:
+	if _available_interactable and not _is_still_overlapping(_available_interactable):
+		_clear_interactable()
+
+# Centralized clear (so future logic like temp prompts can hook here).
+func _clear_interactable() -> void:
+	_available_interactable = null
+	if _interaction_prompt:
+		_interaction_prompt.hide_prompt()
+
 	
 func _physics_process( delta ):
 	move_and_slide()
@@ -79,14 +105,11 @@ func _physics_process( delta ):
 func update_animation_direction() -> void:
 	if direction == Vector2.ZERO:
 		return
-
 	var new_direction := Vector2.ZERO
-	
 	if abs(direction.x) > 0.2:
 		new_direction.x = sign(direction.x)
 	if abs(direction.y) > 0.2:
 		new_direction.y = sign(direction.y)
-	
 	if new_direction != last_direction:
 		last_direction = new_direction
 		direction_changed.emit(last_direction)
@@ -103,14 +126,12 @@ func get_anim_direction_string() -> String:
 		Vector2(1, -1): "up_right",
 		Vector2(-1, -1): "up_left"
 	}
-	
 	var rounded_dir = last_direction.round()
 	return direction_map.get(rounded_dir, "down")
 	
 func update_animation( state : String ) -> void:
 	var anim_dir = get_anim_direction_string()
 	var anim_name = state + "_" + anim_dir
-	
 	if sprite.sprite_frames.has_animation(anim_name):
 		sprite.play(anim_name)
 	else:
@@ -123,37 +144,25 @@ func update_animation( state : String ) -> void:
 		elif anim_dir.contains("right"):
 			sprite.play(state + "_right")
 
-# This function is no longer needed, as the logic is now handled in _ready.
-# func set_forced_crouch(is_forced: bool) -> void:
-# 	can_stand_up = not is_forced
-# 	if is_forced and not is_crouched:
-# 		state_machine.change_state(state_machine.get_node("Crouch"))
-
 func _take_damage( damage_amount: int, hurtbox: HurtBox ) -> void:
 	if invulnerable:
 		return
-	
 	if is_crouched:
 		is_crouched = false
-		
 	update_hp( -damage_amount )
 	player_damaged.emit( damage_amount )
 	damaged.emit( hurtbox )
-	
 	if hp <= 0:
 		print("Player has been defeated!")
 	
 func update_hp( delta : int ) -> void:
 	hp = clampi( hp + delta, 0, max_hp )
 	print ("Player HP = " + str(hp))
-	pass
 	
 func make_invulnerable( _duration : float = 1.0 ) -> void:
 	invulnerable = true
 	hitbox.monitoring = false
-	
 	await get_tree().create_timer( _duration ).timeout
-	
 	invulnerable = false
 	hitbox.monitoring = true
 
@@ -187,6 +196,38 @@ func enter_hidden_state_on_spawn(interactable: Interactable):
 
 func exit_hidden_state():
 	if state_machine.current_state is State_Hidden:
-		var next_state = state_machine.get_node("Crouch") if PlayerManager.is_crouched else state_machine.get_node("Idle")
+		var next_state = state_machine.get_node("Crouch") if (PlayerManager.is_crouched or PlayerManager.level_forces_crouch) else state_machine.get_node("Idle")
 		state_machine.change_state(next_state)
 #endregion
+
+# show_blocked_stand_message: Call from states when player tries to stand but cannot.
+func show_blocked_stand_message() -> void:
+	show_temp_prompt("Can't stand up here")
+
+# Generic helper to show a temporary prompt for 'duration' seconds.
+func show_temp_prompt(msg: String, duration: float = 2.0) -> void:
+	if not _interaction_prompt:
+		return
+	if not _temp_prompt_active:
+		_temp_prompt_saved_text = _interaction_prompt.label.text
+	_temp_prompt_active = true
+	_interaction_prompt.set_text(msg)
+	_interaction_prompt.show_prompt()
+	if _temp_prompt_timer:
+		if _temp_prompt_timer.timeout.is_connected(_on_temp_prompt_timeout):
+			_temp_prompt_timer.timeout.disconnect(_on_temp_prompt_timeout)
+	_temp_prompt_timer = get_tree().create_timer(duration)
+	_temp_prompt_timer.timeout.connect(_on_temp_prompt_timeout)
+
+func _on_temp_prompt_timeout() -> void:
+	_temp_prompt_active = false
+	# Restore original prompt if still near an interactable; otherwise hide.
+	if _available_interactable:
+		var text = _available_interactable.get_prompt_text()
+		if is_hidden and _available_interactable.get_hidden_prompt_text() != "":
+			# If hidden and a hidden prompt exists, prefer it
+			text = _available_interactable.get_hidden_prompt_text()
+		_interaction_prompt.set_text(text)
+		_interaction_prompt.show_prompt()
+	else:
+		_interaction_prompt.hide_prompt()
