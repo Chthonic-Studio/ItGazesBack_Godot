@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=4 uid="uid://dr0y7kv0fb5yi"]
+[gd_scene load_steps=11 format=4 uid="uid://dr0y7kv0fb5yi"]
 
 [ext_resource type="Script" uid="uid://chal8yif3p2fg" path="res://Scenes/Levels/level.gd" id="1_03s1y"]
 [ext_resource type="PackedScene" uid="uid://2gdt4du0ccnq" path="res://Scenes/level_geometry.tscn" id="2_mefga"]
 [ext_resource type="PackedScene" uid="uid://d23kam0h3tvtd" path="res://Scenes/ground_tiles.tscn" id="3_skskp"]
 [ext_resource type="Texture2D" uid="uid://ckwt6w6bxmyk" path="res://Assets/Vent1.png" id="4_2sy5t"]
 [ext_resource type="PackedScene" uid="uid://bqmtmh0o5nl7j" path="res://Scenes/Levels/Addons/level_transition.tscn" id="5_mefga"]
+[ext_resource type="PackedScene" uid="uid://cqos30hrusqn8" path="res://Scenes/Levels/Addons/wall_light.tscn" id="6_skskp"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hjesa"]
 atlas = ExtResource("4_2sy5t")
@@ -58,14 +59,14 @@ frame_progress = 1.0
 [node name="LevelTransitions" type="Node2D" parent="."]
 
 [node name="L1_Vents_1" parent="LevelTransitions" instance=ExtResource("5_mefga")]
-position = Vector2(1425, 1067)
+position = Vector2(1420, 1041)
 level = "uid://br7074y5eje1b"
 target_transition_area = "L1_1"
 is_hiding_spot = true
 size = 1
 
 [node name="SpawnLocation" type="Marker2D" parent="LevelTransitions/L1_Vents_1"]
-position = Vector2(15, -51)
+position = Vector2(23, -34)
 
 [node name="L1_Vents_2" parent="LevelTransitions" instance=ExtResource("5_mefga")]
 position = Vector2(1424, 717)
@@ -75,4 +76,25 @@ is_hiding_spot = true
 size = 1
 
 [node name="SpawnLocation" type="Marker2D" parent="LevelTransitions/L1_Vents_2"]
-position = Vector2(-1, 37)
+position = Vector2(3, 27)
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
+color = Color(0, 0, 0, 0.654902)
+blend_mode = 2
+max_distance = 90.0
+
+[node name="Lights" type="Node2D" parent="."]
+
+[node name="WallLight" parent="Lights" instance=ExtResource("6_skskp")]
+position = Vector2(1451, 1055)
+light_color = Color(0.509804, 1, 0.45098, 1)
+energy = 2.8
+light_size = null
+flicker_speed = 1.0
+
+[node name="WallLight2" parent="Lights" instance=ExtResource("6_skskp")]
+position = Vector2(1466, 735)
+light_color = Color(0.509804, 1, 0.45098, 1)
+energy = 2.8
+light_size = null
+flicker_speed = 1.0

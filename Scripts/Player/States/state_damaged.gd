@@ -50,7 +50,7 @@ func _on_player_damaged(hurtbox: HurtBox) -> void:
 func _animation_finished() -> void:
 	# After damage, if area is forced -> return to crouch posture (apply_posture handles it),
 	# else go to idle (player may have uncrouched on damage).
-	if PlayerManager.level_forces_crouch or PlayerManager.crouch_preference:
-		next_state = crouch if (PlayerManager.level_forces_crouch or PlayerManager.crouch_preference) else idle
+	if PlayerManager.level_forces_crouch : #or PlayerManager.crouch_preference
+		next_state = crouch if PlayerManager.level_forces_crouch else idle  # or PlayerManager.crouch_preference
 	else:
 		next_state = idle

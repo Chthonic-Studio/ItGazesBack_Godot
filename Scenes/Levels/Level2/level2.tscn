@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://cy4bc0hf1gu74"]
+
+[ext_resource type="Script" uid="uid://chal8yif3p2fg" path="res://Scenes/Levels/level.gd" id="1_23cxw"]
+[ext_resource type="PackedScene" uid="uid://21rfh06vow1n" path="res://Scenes/Levels/player_spawn.tscn" id="2_aej36"]
+[ext_resource type="PackedScene" uid="uid://2gdt4du0ccnq" path="res://Scenes/level_geometry.tscn" id="3_adqju"]
+[ext_resource type="PackedScene" uid="uid://d23kam0h3tvtd" path="res://Scenes/ground_tiles.tscn" id="4_8hkly"]
+
+[node name="Level2" type="Node2D"]
+script = ExtResource("1_23cxw")
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
+visible = false
+color = Color(0, 0, 0, 0.654902)
+blend_mode = 2
+max_distance = 90.0
+
+[node name="PlayerSpawn" parent="." instance=ExtResource("2_aej36")]
+position = Vector2(1430, 1012)
+
+[node name="LevelGeometry" parent="." instance=ExtResource("3_adqju")]
+
+[node name="GroundTiles" parent="LevelGeometry" instance=ExtResource("4_8hkly")]
+
+[node name="Walls" parent="LevelGeometry" instance=ExtResource("4_8hkly")]
+
+[node name="Props" parent="LevelGeometry" instance=ExtResource("4_8hkly")]
+
+[node name="Decorations" parent="LevelGeometry" instance=ExtResource("4_8hkly")]

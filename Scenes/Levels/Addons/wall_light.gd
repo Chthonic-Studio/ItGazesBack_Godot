@@ -18,6 +18,14 @@ enum FlickerType { INTENSITY, BLINKING }
 		energy = value
 		_update_light_properties()
 
+# --- REASON FOR CHANGE ---
+# Added light_size to control the scale of the light's texture via an export variable.
+# This allows for easy resizing of the light's area of effect directly from the editor.
+@export_range(0.1, 10.0, 0.1) var light_size : float = 1.0:
+	set(value):
+		light_size = value
+		_update_light_properties()
+
 @export_category("Flicker Effect")
 @export var flicker_enabled : bool = true
 
@@ -70,6 +78,10 @@ func _update_light_properties() -> void:
 	if point_light_2d:
 		point_light_2d.color = light_color
 		_base_energy = energy # Update base energy when the exported property changes.
+		# --- REASON FOR CHANGE ---
+		# This line applies the light_size to the PointLight2D's texture_scale property.
+		# It's the most direct way to control the visual size of the light.
+		point_light_2d.texture_scale = light_size
 		if not flicker_enabled:
 			point_light_2d.energy = _base_energy
 
