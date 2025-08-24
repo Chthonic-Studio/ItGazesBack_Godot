@@ -16,7 +16,7 @@
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0iro7"]
 radius = 9.0
-height = 28.0
+height = 22.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tx1dd"]
 height = 38.0
@@ -28,7 +28,7 @@ wall_min_slide_angle = 0.174533
 script = ExtResource("1_cvnsp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(3, 17)
+position = Vector2(3, 19)
 shape = SubResource("CapsuleShape2D_0iro7")
 
 [node name="PlayerSprite" type="AnimatedSprite2D" parent="."]

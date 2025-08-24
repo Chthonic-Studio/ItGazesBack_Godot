@@ -47,14 +47,73 @@ is_vertical = true
 position = Vector2(26, 46)
 
 [node name="L1_2" parent="Transitions" instance=ExtResource("5_btxmh")]
-position = Vector2(1553, 699)
+position = Vector2(1552, 707)
 level = "uid://dr0y7kv0fb5yi"
 target_transition_area = "L1_Vents_2"
 is_hiding_spot = true
-is_vertical = true
 
 [node name="SpawnLocation" type="Marker2D" parent="Transitions/L1_2"]
-position = Vector2(-4, -34)
+position = Vector2(-1, -13)
+
+[node name="L1_3" parent="Transitions" instance=ExtResource("5_btxmh")]
+position = Vector2(304, 528)
+level = "uid://dr0y7kv0fb5yi"
+target_transition_area = "L1_Vents_3"
+is_hiding_spot = true
+is_vertical = true
+
+[node name="SpawnLocation" type="Marker2D" parent="Transitions/L1_3"]
+position = Vector2(0, 31)
+
+[node name="L1_4" parent="Transitions" instance=ExtResource("5_btxmh")]
+position = Vector2(528, 881)
+level = "uid://dr0y7kv0fb5yi"
+target_transition_area = "L1_Vents_4"
+is_hiding_spot = true
+is_vertical = true
+
+[node name="SpawnLocation" type="Marker2D" parent="Transitions/L1_4"]
+position = Vector2(0, 31)
+
+[node name="L1_5" parent="Transitions" instance=ExtResource("5_btxmh")]
+position = Vector2(557, 1071)
+level = "uid://dr0y7kv0fb5yi"
+target_transition_area = "L1_Vents_5"
+is_hiding_spot = true
+is_vertical = true
+
+[node name="SpawnLocation" type="Marker2D" parent="Transitions/L1_5"]
+position = Vector2(15, -3)
+
+[node name="L1_6" parent="Transitions" instance=ExtResource("5_btxmh")]
+position = Vector2(84, 720)
+level = "uid://dr0y7kv0fb5yi"
+target_transition_area = "L1_Vents_6"
+is_hiding_spot = true
+is_vertical = true
+
+[node name="SpawnLocation" type="Marker2D" parent="Transitions/L1_6"]
+position = Vector2(-14, -4)
+
+[node name="L1_7" parent="Transitions" instance=ExtResource("5_btxmh")]
+position = Vector2(80, 593)
+level = "uid://dr0y7kv0fb5yi"
+target_transition_area = "L1_Vents_7"
+is_hiding_spot = true
+is_vertical = true
+
+[node name="SpawnLocation" type="Marker2D" parent="Transitions/L1_7"]
+position = Vector2(0, 26)
+
+[node name="L1_8" parent="Transitions" instance=ExtResource("5_btxmh")]
+position = Vector2(81, 113)
+level = "uid://dr0y7kv0fb5yi"
+target_transition_area = "L1_Vents_8"
+is_hiding_spot = true
+is_vertical = true
+
+[node name="SpawnLocation" type="Marker2D" parent="Transitions/L1_8"]
+position = Vector2(-4, 32)
 
 [node name="Lights" type="Node2D" parent="."]
 
@@ -62,14 +121,13 @@ position = Vector2(-4, -34)
 position = Vector2(1521, 1010)
 light_color = Color(0.509804, 1, 0.45098, 1)
 energy = 2.8
-light_size = null
 flicker_speed = 1.0
 
 [node name="WallLight2" parent="Lights" instance=ExtResource("6_nqjqy")]
-position = Vector2(1332, 996)
-light_color = Color(1, 0.45, 0.45, 1)
-energy = 1.2
-light_size = null
+position = Vector2(1271, 1026)
+light_color = Color(0.982917, 0, 0.220316, 1)
+energy = 2.4
+light_size = 3.1
 flicker_type = 1
 flicker_speed = 1.0
 blink_randomness = 0.65
@@ -78,13 +136,11 @@ blink_randomness = 0.65
 position = Vector2(1162, 964)
 light_color = Color(0.509804, 1, 0.45098, 1)
 energy = 2.8
-light_size = null
 flicker_speed = 1.0
 
 [node name="WallLight4" parent="Lights" instance=ExtResource("6_nqjqy")]
 position = Vector2(658, 989)
 light_color = Color(0.509804, 1, 0.45098, 1)
-light_size = null
 flicker_type = 1
 flicker_speed = 1.0
 blink_frequency = 3.1
@@ -94,7 +150,6 @@ blink_randomness = 0.7
 position = Vector2(337, 840)
 light_color = Color(0.509804, 1, 0.45098, 1)
 energy = 2.8
-light_size = null
 flicker_speed = 1.0
 
 [node name="WallLight6" parent="Lights" instance=ExtResource("6_nqjqy")]
@@ -108,7 +163,6 @@ flicker_speed = 1.0
 position = Vector2(1408, 808)
 light_color = Color(1, 0.45, 0.45, 1)
 energy = 3.5
-light_size = null
 flicker_speed = 1.0
 flicker_strength = 0.4
 
@@ -116,7 +170,6 @@ flicker_strength = 0.4
 position = Vector2(1205, 606)
 light_color = Color(0.509804, 1, 0.45098, 1)
 energy = 2.8
-light_size = null
 flicker_type = 1
 flicker_speed = 1.0
 blink_frequency = 2.7
@@ -178,10 +231,33 @@ light_size = 2.0
 flicker_speed = 2.9
 flicker_strength = 0.7
 
+[node name="WallLight16" parent="Lights" instance=ExtResource("6_nqjqy")]
+position = Vector2(1500, 415)
+light_color = Color(0.94, 0, 0.203667, 1)
+energy = 3.4
+light_size = 2.6
+flicker_type = 1
+flicker_speed = 2.9
+flicker_strength = 0.7
+blink_frequency = 10.0
+blink_randomness = 0.8
+
 [node name="HidingSpots" type="Node2D" parent="."]
 
 [node name="HidingVent" parent="HidingSpots" instance=ExtResource("7_hf8m8")]
 position = Vector2(1199, 945)
+
+[node name="HidingVent2" parent="HidingSpots" instance=ExtResource("7_hf8m8")]
+position = Vector2(1232, 529)
+
+[node name="HidingVent3" parent="HidingSpots" instance=ExtResource("7_hf8m8")]
+position = Vector2(47, 655)
+
+[node name="HidingVent4" parent="HidingSpots" instance=ExtResource("7_hf8m8")]
+position = Vector2(529, 81)
+
+[node name="HidingVent5" parent="HidingSpots" instance=ExtResource("7_hf8m8")]
+position = Vector2(1168, 81)
 
 [node name="Enemies" type="Node2D" parent="."]
 
