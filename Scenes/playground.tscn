@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://chal8yif3p2fg" path="res://Scenes/Levels/level.gd" id="1_qyfof"]
 [ext_resource type="PackedScene" uid="uid://d23kam0h3tvtd" path="res://Scenes/ground_tiles.tscn" id="2_6xle2"]
 [ext_resource type="PackedScene" uid="uid://2gdt4du0ccnq" path="res://Scenes/level_geometry.tscn" id="2_u4ce8"]
-[ext_resource type="PackedScene" uid="uid://bw7thq4k8hek7" path="res://Scenes/Enemies/CorruptedCrew/corrupted_crew1.tscn" id="4_qyfof"]
+[ext_resource type="PackedScene" uid="uid://bw7thq4k8hek7" path="res://Scenes/Enemies/CorruptedCrew/roamer.tscn" id="4_qyfof"]
 
 [node name="Playground" type="Node2D"]
 script = ExtResource("1_qyfof")

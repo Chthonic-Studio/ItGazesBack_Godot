@@ -1,0 +1,76 @@
+[gd_scene load_steps=14 format=3 uid="uid://cgwxgj4bui4fa"]
+
+[ext_resource type="Script" uid="uid://cguwpac7tkmhf" path="res://Scripts/Enemies/enemy.gd" id="1_udyk1"]
+[ext_resource type="SpriteFrames" uid="uid://cvvhw3ip7o83" path="res://Scenes/Enemies/CorruptedCrew/SpriteFrames/crew1.tres" id="2_mumq7"]
+[ext_resource type="PackedScene" uid="uid://b3st033b6ln2g" path="res://Scripts/GeneralNodes/HitBox/hitbox.tscn" id="3_pim4t"]
+[ext_resource type="PackedScene" uid="uid://b7pkk4j416ojd" path="res://Scripts/GeneralNodes/HurtBox/hurtbox.tscn" id="4_5v5x7"]
+[ext_resource type="PackedScene" uid="uid://c2gd3x3rxjmg6" path="res://Scripts/Enemies/vision_area.tscn" id="5_f2naf"]
+[ext_resource type="Script" uid="uid://bnc4m8uo1gsbx" path="res://Scripts/Enemies/enemy_state_machine.gd" id="6_cuktn"]
+[ext_resource type="Script" uid="uid://247xkfpk5egh" path="res://Scripts/Enemies/EnemyStates/enemy_state_idle.gd" id="7_6etwu"]
+[ext_resource type="Script" uid="uid://ycf8jwwsg4jd" path="res://Scripts/Enemies/EnemyStates/enemy_state_wander.gd" id="8_6x3ah"]
+[ext_resource type="Script" uid="uid://btmr355rka5tl" path="res://Scripts/Enemies/EnemyStates/enemy_state_chase.gd" id="9_wro7h"]
+[ext_resource type="Script" uid="uid://01aeqjn66rk5" path="res://Scripts/Enemies/EnemyStates/enemy_state_search.gd" id="10_pim4t"]
+[ext_resource type="Script" uid="uid://dliyi36gl5b0q" path="res://Scripts/Enemies/EnemyStates/enemy_state_patrol.gd" id="11_5v5x7"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fqkff"]
+radius = 11.0
+height = 28.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_41ojb"]
+radius = 16.0312
+
+[node name="Patroller" type="CharacterBody2D"]
+collision_layer = 256
+collision_mask = 16
+motion_mode = 1
+script = ExtResource("1_udyk1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 9)
+shape = SubResource("CapsuleShape2D_fqkff")
+
+[node name="EnemySprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("2_mumq7")
+animation = &"run_left"
+
+[node name="HitBox" parent="." instance=ExtResource("3_pim4t")]
+
+[node name="Interactions" type="Node2D" parent="."]
+
+[node name="Hurtbox" parent="Interactions" instance=ExtResource("4_5v5x7")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactions/Hurtbox"]
+shape = SubResource("CircleShape2D_41ojb")
+
+[node name="VisionArea" parent="Interactions" instance=ExtResource("5_f2naf")]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Interactions/VisionArea"]
+polygon = PackedVector2Array(-16, 0, -41, -34, -256, 154, -60, 252, 68, 246, 252, 150, 34, -30, 17, 0)
+
+[node name="EnemyStateMachine" type="Node" parent="."]
+script = ExtResource("6_cuktn")
+
+[node name="Idle" type="Node" parent="EnemyStateMachine" node_paths=PackedStringArray("after_idle_state")]
+script = ExtResource("7_6etwu")
+after_idle_state = NodePath("../Patrol")
+
+[node name="Wander" type="Node" parent="EnemyStateMachine" node_paths=PackedStringArray("next_state")]
+script = ExtResource("8_6x3ah")
+next_state = NodePath("../Idle")
+
+[node name="Chase" type="Node" parent="EnemyStateMachine" node_paths=PackedStringArray("vision_area", "attack_area", "next_state")]
+script = ExtResource("9_wro7h")
+anim_name = "run"
+chase_speed = 70.0
+state_aggro_duration = 2.0
+vision_area = NodePath("../../Interactions/VisionArea")
+attack_area = NodePath("../../Interactions/Hurtbox")
+next_state = NodePath("../Idle")
+
+[node name="Search" type="Node" parent="EnemyStateMachine" node_paths=PackedStringArray("patrol_state", "idle_state")]
+script = ExtResource("10_pim4t")
+patrol_state = NodePath("../Patrol")
+idle_state = NodePath("../Idle")
+
+[node name="Patrol" type="Node" parent="EnemyStateMachine"]
+script = ExtResource("11_5v5x7")

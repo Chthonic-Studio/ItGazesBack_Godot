@@ -3,12 +3,21 @@ class_name Enemy extends CharacterBody2D
 signal direction_changed ( new_direction : Vector2 )
 signal enemy_damaged ()
 
+@export_category("Configuration")
+@export var sprite_frames_resource : SpriteFrames: # New: To set enemy sprites in the editor.
+	set(value):
+		sprite_frames_resource = value
+		if sprite:
+			sprite.sprite_frames = sprite_frames_resource
+@export var patrol_path : Path2D # New: For the Patroller AI to follow.
+
+@export_category("Stats")
+@export var hp : int = 3
+
 # We'll use this to store the last non-zero direction for animations.
 var last_direction : Vector2 = Vector2.DOWN
 # This will be controlled by the state machine (Wander, Chase, etc.).
 var direction : Vector2 = Vector2.ZERO
-
-@export var hp : int = 3
 
 @onready var sprite : AnimatedSprite2D = $EnemySprite
 @onready var state_machine: EnemyStateMachine = $EnemyStateMachine
@@ -19,6 +28,9 @@ const DIR_4 := [ Vector2.UP, Vector2.DOWN, Vector2.LEFT, Vector2.RIGHT ]
 var invulnerable : bool = false
 
 func _ready() -> void:
+	if sprite_frames_resource:
+		sprite.sprite_frames = sprite_frames_resource
+		
 	# The state machine must be initialized to start the AI logic.
 	state_machine.Initialize(self)
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=4 uid="uid://br7074y5eje1b"]
+[gd_scene load_steps=12 format=4 uid="uid://br7074y5eje1b"]
 
 [ext_resource type="PackedScene" uid="uid://d23kam0h3tvtd" path="res://Scenes/ground_tiles.tscn" id="1_asbk5"]
 [ext_resource type="Script" uid="uid://chal8yif3p2fg" path="res://Scenes/Levels/level.gd" id="1_tmsqo"]
@@ -7,7 +7,15 @@
 [ext_resource type="PackedScene" uid="uid://bqmtmh0o5nl7j" path="res://Scenes/Levels/Addons/level_transition.tscn" id="5_btxmh"]
 [ext_resource type="PackedScene" uid="uid://cqos30hrusqn8" path="res://Scenes/Levels/Addons/wall_light.tscn" id="6_nqjqy"]
 [ext_resource type="PackedScene" uid="uid://bbeaneey7ng0w" path="res://Scenes/Levels/Addons/hiding_vent.tscn" id="7_hf8m8"]
-[ext_resource type="PackedScene" uid="uid://bw7thq4k8hek7" path="res://Scenes/Enemies/CorruptedCrew/corrupted_crew1.tscn" id="8_0y7fr"]
+[ext_resource type="PackedScene" uid="uid://bw7thq4k8hek7" path="res://Scenes/Enemies/CorruptedCrew/roamer.tscn" id="8_0y7fr"]
+[ext_resource type="SpriteFrames" uid="uid://cvvhw3ip7o83" path="res://Scenes/Enemies/CorruptedCrew/SpriteFrames/crew1.tres" id="9_pwe4l"]
+[ext_resource type="PackedScene" uid="uid://cgwxgj4bui4fa" path="res://Scenes/Enemies/CorruptedCrew/patroller.tscn" id="10_fxcoe"]
+
+[sub_resource type="Curve2D" id="Curve2D_pwe4l"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -24, -22, 0, 0, 0, 0, -398, -15, 0, 0, 0, 0, -24, -20)
+}
+point_count = 3
 
 [node name="Level1" type="Node2D"]
 script = ExtResource("1_tmsqo")
@@ -261,5 +269,14 @@ position = Vector2(1168, 81)
 
 [node name="Enemies" type="Node2D" parent="."]
 
-[node name="CorruptedCrew1" parent="Enemies" instance=ExtResource("8_0y7fr")]
+[node name="Roamer" parent="Enemies" instance=ExtResource("8_0y7fr")]
 position = Vector2(1106, 1017)
+sprite_frames_resource = ExtResource("9_pwe4l")
+
+[node name="Patroller" parent="Enemies" node_paths=PackedStringArray("patrol_path") instance=ExtResource("10_fxcoe")]
+position = Vector2(1388, 168)
+sprite_frames_resource = ExtResource("9_pwe4l")
+patrol_path = NodePath("Path2D")
+
+[node name="Path2D" type="Path2D" parent="Enemies/Patroller"]
+curve = SubResource("Curve2D_pwe4l")
