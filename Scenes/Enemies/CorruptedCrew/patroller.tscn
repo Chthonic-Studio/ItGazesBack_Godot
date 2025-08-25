@@ -24,6 +24,7 @@ collision_layer = 256
 collision_mask = 16
 motion_mode = 1
 script = ExtResource("1_udyk1")
+vision_angle = 55.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 9)
@@ -43,9 +44,8 @@ animation = &"run_left"
 shape = SubResource("CircleShape2D_41ojb")
 
 [node name="VisionArea" parent="Interactions" instance=ExtResource("5_f2naf")]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Interactions/VisionArea"]
-polygon = PackedVector2Array(-16, 0, -41, -34, -256, 154, -60, 252, 68, 246, 252, 150, 34, -30, 17, 0)
+collision_mask = 1
+monitorable = false
 
 [node name="EnemyStateMachine" type="Node" parent="."]
 script = ExtResource("6_cuktn")

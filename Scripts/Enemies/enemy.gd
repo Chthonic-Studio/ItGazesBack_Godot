@@ -4,12 +4,19 @@ signal direction_changed ( new_direction : Vector2 )
 signal enemy_damaged ()
 
 @export_category("Configuration")
-@export var sprite_frames_resource : SpriteFrames: # New: To set enemy sprites in the editor.
+@export var sprite_frames_resource : SpriteFrames: ## To set enemy sprites in the editor.
 	set(value):
 		sprite_frames_resource = value
 		if sprite:
 			sprite.sprite_frames = sprite_frames_resource
-@export var patrol_path : Path2D # New: For the Patroller AI to follow.
+## Only for Patroller type enemies. This is the path they'll patrol, make sure it's looped or the enemy will continue walking towards the last path
+@export var patrol_path : Path2D 
+
+@export_group("Detection Ranges")
+@export_range(0, 180) var vision_angle : float = 45.0 ## The angle (in degrees) of the vision cone on each side. 90 = full 180 degree vision.
+@export var vision_range_standing : float = 600.0 ## The distance the enemy can see a standing player.
+@export var vision_range_crouching : float = 200.0 ## The distance the enemy can see a crouching player.
+@export var absolute_detection_radius : float = 70.0 ## The "personal space" radius for instant detection.
 
 @export_category("Stats")
 @export var hp : int = 3

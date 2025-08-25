@@ -21,15 +21,14 @@ var _can_see_player : bool = false
 
 func init() -> void:
 	if vision_area:
-		vision_area.player_entered.connect( _on_player_enter )
-		vision_area.player_exited.connect( _on_player_exit )
+		vision_area.player_detected.connect(_on_player_detected)
+		vision_area.player_lost.connect(_on_player_lost)
 
 func enter() -> void:
 	pathfinder = PATHFINDER.instantiate() as Pathfinder
 	enemy.add_child( pathfinder )
 	_timer = state_aggro_duration
 	
-	# --- REASON FOR CHANGE ---
 	# Check if the player exists and is not hidden before chasing.
 	if PlayerManager.player and not PlayerManager.player.is_hidden:
 		_direction = enemy.global_position.direction_to( PlayerManager.player.global_position )
@@ -71,13 +70,13 @@ func process( _delta: float ) -> EnemyState:
 func physics( _delta: float ) -> EnemyState:
 	return null	
 
-func _on_player_enter() -> void:
-	# --- REASON FOR CHANGE ---
-	# Only become aggressive if the player is not hidden.
-	if PlayerManager.player and not PlayerManager.player.is_hidden:
-		_can_see_player = true
-		if state_machine.current_state != self:
-			state_machine.ChangeState( self )
+func _on_player_detected() -> void:
+	# This is called when the VisionArea confirms the player is visible.
+	_can_see_player = true
+	# If we are not already chasing, switch to the chase state.
+	if state_machine.current_state != self:
+		state_machine.ChangeState(self)
 	
-func _on_player_exit() -> void:
+func _on_player_lost() -> void:
+	# This is called when the VisionArea confirms the player is no longer visible.
 	_can_see_player = false

@@ -15,7 +15,7 @@ radius = 11.0
 height = 28.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_41ojb"]
-radius = 16.0312
+radius = 16.0
 
 [node name="Roamer" type="CharacterBody2D"]
 collision_layer = 256
@@ -41,9 +41,8 @@ animation = &"run_left"
 shape = SubResource("CircleShape2D_41ojb")
 
 [node name="VisionArea" parent="Interactions" instance=ExtResource("6_41ojb")]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Interactions/VisionArea"]
-polygon = PackedVector2Array(-16, 0, -41, -34, -256, 154, -60, 252, 68, 246, 252, 150, 34, -30, 17, 0)
+collision_mask = 1
+monitorable = false
 
 [node name="EnemyStateMachine" type="Node" parent="."]
 script = ExtResource("6_4rqfw")

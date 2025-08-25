@@ -78,9 +78,9 @@ func set_path() -> void:
 	for i in 8:
 		outcomes [ i ] = interests [ i ] - obstacles [ i ]
 	
-	print( "Outcomes: ", outcomes)
-	print( "Interests: ", interests)
-	print( "Outcomes: ", interests)
+	#print( "Outcomes: ", outcomes)
+	#print( "Interests: ", interests)
+	#print( "Outcomes: ", interests)
 	# Set the best path with Vector2 that corresponds with the outcome of the best value
 	
 	best_path = vectors [ outcomes.find( outcomes.max() ) ]
