@@ -58,7 +58,7 @@ position = Vector2(-1, -13)
 [node name="L1_3" parent="Transitions" instance=ExtResource("5_btxmh")]
 position = Vector2(304, 528)
 level = "uid://dr0y7kv0fb5yi"
-target_transition_area = "L1_Vents_3"
+target_transition_area = "L1_Vents_4"
 is_hiding_spot = true
 is_vertical = true
 
@@ -68,7 +68,7 @@ position = Vector2(0, 31)
 [node name="L1_4" parent="Transitions" instance=ExtResource("5_btxmh")]
 position = Vector2(528, 881)
 level = "uid://dr0y7kv0fb5yi"
-target_transition_area = "L1_Vents_4"
+target_transition_area = "L1_Vents_3"
 is_hiding_spot = true
 is_vertical = true
 

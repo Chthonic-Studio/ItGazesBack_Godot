@@ -213,3 +213,24 @@ flicker_type = 1
 flicker_speed = 1.0
 blink_frequency = 0.2
 blink_randomness = 0.3
+
+[node name="WallLight9" parent="Lights" instance=ExtResource("6_skskp")]
+position = Vector2(-528, 254)
+light_color = Color(0.679167, 1, 0.45, 1)
+energy = 1.5
+light_size = 4.6
+flicker_type = 1
+flicker_speed = 1.0
+blink_frequency = 0.1
+blink_randomness = 0.1
+
+[node name="WallLight10" parent="Lights" instance=ExtResource("6_skskp")]
+position = Vector2(-572, -447)
+light_color = Color(0.679167, 1, 0.45, 1)
+energy = 1.5
+light_size = 4.6
+flicker_enabled = false
+flicker_type = 1
+flicker_speed = 1.0
+blink_frequency = 0.2
+blink_randomness = 0.3
