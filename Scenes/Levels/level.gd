@@ -12,6 +12,8 @@ func _ready() -> void:
 	if PlayerManager.player:
 		PlayerManager.set_as_parent(self)
 		
+		PlayerManager._update_anxiety_timers()
+		
 		# 3. Enforce or release crouch constraint immediately.
 		if force_crouch:
 			# Force crouch & lock standing

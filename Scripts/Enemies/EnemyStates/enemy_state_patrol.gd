@@ -6,52 +6,69 @@ class_name EnemyStatePatrol extends EnemyState
 @export var patrol_idle_randomness: float = 0.5 # 0 = no randomness, 1 = high randomness.
 @export var anim_name: String = "walk"
 
+enum PatrolPhase { MOVING, WAITING }
+var _current_phase: PatrolPhase
+
 var _current_target_index: int = 0
 var _wait_timer: float = 0.0
 
 func enter() -> void:
-	if not enemy.patrol_path:
-		print("ERROR: Patroller has no Path2D assigned!")
+	if not enemy.patrol_path or not enemy.patrol_path.curve:
+		print("ERROR: Patroller '", enemy.name, "' has no Path2D or Curve assigned!")
+		set_physics_process(false) # Disable physics process for this state
 		return
 
-	# Find the closest point on the path to start from.
-	var path_points = enemy.patrol_path.curve.get_baked_points()
-	if path_points.is_empty():
+	var point_count = enemy.patrol_path.curve.get_point_count()
+	if point_count == 0:
+		print("WARNING: Patrol path for '", enemy.name, "' has no points.")
+		set_physics_process(false)
 		return
 
 	var closest_dist_sq = -1.0
-	for i in range(path_points.size()):
-		var dist_sq = enemy.global_position.distance_squared_to(enemy.patrol_path.global_position + path_points[i])
+	for i in range(point_count):
+		var point_global_pos = enemy.patrol_path.global_position + enemy.patrol_path.curve.get_point_position(i)
+		var dist_sq = enemy.global_position.distance_squared_to(point_global_pos)
 		if closest_dist_sq < 0 or dist_sq < closest_dist_sq:
 			closest_dist_sq = dist_sq
 			_current_target_index = i
 	
-	_set_wait_timer() # Start waiting immediately at the first point.
-	enemy.update_animation("idle") # Start by being idle.
+	_current_phase = PatrolPhase.MOVING
+	enemy.update_animation(anim_name)
 
+# --- REASON FOR CHANGE ---
+# The process function is now ONLY responsible for handling the waiting timer.
+# This keeps its logic clean and focused on time-based events, not movement.
 func process(delta: float) -> EnemyState:
-	if _wait_timer > 0:
+	if _current_phase == PatrolPhase.WAITING:
 		_wait_timer -= delta
 		if _wait_timer <= 0:
-			# Finished waiting, move to the next point.
 			_current_target_index = (_current_target_index + 1) % enemy.patrol_path.curve.get_point_count()
-			enemy.update_animation(anim_name)
-		return null
-
-	var target_position = enemy.patrol_path.global_position + enemy.patrol_path.curve.get_point_position(_current_target_index)
-	
-	if enemy.global_position.distance_to(target_position) < 1.0:
-		# Arrived at the point, start waiting.
-		_set_wait_timer()
-		enemy.update_animation("idle")
-		enemy.velocity = Vector2.ZERO
-	else:
-		# Move towards the target.
-		var direction = enemy.global_position.direction_to(target_position)
-		enemy.velocity = direction * move_speed
-		if enemy.set_direction(direction):
+			_current_phase = PatrolPhase.MOVING
 			enemy.update_animation(anim_name)
 			
+	return null
+
+# --- REASON FOR CHANGE ---
+# All movement logic has been moved to the physics() function. This is the correct
+# place for it, as it ensures the velocity is calculated and applied in the same
+# physics frame, resulting in smooth and reliable movement.
+func physics(_delta: float) -> EnemyState:
+	if _current_phase == PatrolPhase.MOVING:
+		var target_position = enemy.patrol_path.global_position + enemy.patrol_path.curve.get_point_position(_current_target_index)
+		
+		if enemy.global_position.distance_to(target_position) < 2.0:
+			# Arrived at the point, switch to waiting.
+			_current_phase = PatrolPhase.WAITING
+			_set_wait_timer()
+			enemy.update_animation("idle")
+			enemy.velocity = Vector2.ZERO
+		else:
+			# Still moving, update velocity.
+			var direction = enemy.global_position.direction_to(target_position)
+			enemy.velocity = direction * move_speed
+			if enemy.set_direction(direction):
+				enemy.update_animation(anim_name)
+	
 	return null
 
 func _set_wait_timer() -> void:

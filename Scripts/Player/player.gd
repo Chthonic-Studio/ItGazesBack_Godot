@@ -1,8 +1,8 @@
 class_name Player extends CharacterBody2D
 
 @export_category("Health")
-@export var max_hp : int = 6
-@export var hp : int = 6
+@export var max_hp : int = 10
+@export var hp : int = 10
 @export var invulnerable : bool = false
 
 var is_crouched : bool = false:
