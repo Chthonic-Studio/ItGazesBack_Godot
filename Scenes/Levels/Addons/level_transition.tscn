@@ -4,7 +4,7 @@
 [ext_resource type="SpriteFrames" uid="uid://blfghnq231dkg" path="res://Scenes/Levels/Addons/vent_sprite_frame.tres" id="2_c8sa7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3ug6q"]
-size = Vector2(32, 64)
+size = Vector2(64, 32)
 
 [node name="LevelTransition" type="Area2D"]
 collision_layer = 0

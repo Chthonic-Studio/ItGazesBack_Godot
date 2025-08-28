@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="DialogueTreeResource" load_steps=3 format=3 uid="uid://dppyfnui4kbh3"]
+
+[ext_resource type="Resource" uid="uid://da8a47j7y227i" path="res://GUI/DialogueSystem/Dialogues/Level1/test_dialogue_node.tres" id="1_5fc5u"]
+[ext_resource type="Script" uid="uid://cmk0xvhqyuivh" path="res://GUI/DialogueSystem/dialogue_tree_resource.gd" id="1_l8cx7"]
+
+[resource]
+script = ExtResource("1_l8cx7")
+root_node = ExtResource("1_5fc5u")
+metadata/_custom_type_script = "uid://cmk0xvhqyuivh"

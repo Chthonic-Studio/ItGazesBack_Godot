@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="It Gazes Back"
-run/main_scene="uid://bit15vodjgucj"
+run/main_scene="uid://br7074y5eje1b"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 LevelManager="*res://Scripts/Globals/level_manager.gd"
 SceneTransition="*res://Scenes/SceneTransition/scene_transition.tscn"
 PlayerHud="*res://GUI/player_hud.tscn"
+DialogueManager="*res://Scripts/Globals/dialogue_manager.gd"
 PlayerManager="*res://Scripts/Globals/player_manager.gd"
 
 [debug]

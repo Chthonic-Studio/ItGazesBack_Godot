@@ -1,0 +1,62 @@
+[gd_scene load_steps=2 format=3 uid="uid://cgya1jgk1x7w0"]
+
+[ext_resource type="Script" uid="uid://b782l2a7q6eju" path="res://GUI/DialogueSystem/dialogue_ui.gd" id="1_ngy40"]
+
+[node name="DialogueUi" type="CanvasLayer"]
+script = ExtResource("1_ngy40")
+
+[node name="Panel" type="Panel" parent="."]
+custom_minimum_size = Vector2(320, 220)
+anchors_preset = -1
+anchor_left = 0.233333
+anchor_top = 0.185714
+anchor_right = 0.766667
+anchor_bottom = 0.814286
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.190909
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="DialogueLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ChoicesBox" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/ChoicesBox"]
+layout_mode = 2
+
+[node name="SpeakerLabel" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.034375
+anchor_top = 0.05
+anchor_right = 0.971875
+anchor_bottom = 0.154545
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 13
+text = "Speaker Name"
+metadata/_edit_use_anchors_ = true
+
+[node name="AdvanceIndicator" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 275.0
+offset_top = 190.0
+offset_right = 315.0
+offset_bottom = 213.0
+text = "▼"
+horizontal_alignment = 1
