@@ -35,6 +35,8 @@ func start_dialogue(tree: DialogueTreeResource) -> void:
 	# Connect to the UI signals that will drive the conversation forward.
 	dialogue_ui.advance_request.connect(_on_advance_request)
 	dialogue_ui.choice_selected.connect(_on_choice_selected)
+	dialogue_ui.exit_request.connect(_end_dialogue)
+
 
 	current_tree = tree
 	current_node = tree.root_node
@@ -46,14 +48,17 @@ func start_dialogue(tree: DialogueTreeResource) -> void:
 
 # Called when the player clicks to advance simple dialogue.
 func _on_advance_request() -> void:
-	if not is_dialogue_active: return
-	if current_node and not current_node.choices.is_empty(): return # Don't advance if choices are present.
+	if not is_dialogue_active or not current_node: return
+	
+	var has_next_node = is_instance_valid(current_node.next_node)
+	var has_choices = not current_node.choices.is_empty()
 
-	var next_node = current_node.next_node
-	if next_node:
-		current_node = next_node
+	if has_next_node:
+		# If there's a next node, we advance to it.
+		current_node = current_node.next_node
 		_show_node(current_node)
-	else:
+	elif not has_choices:
+		# Only if there's NO next node and NO choices do we end the dialogue.
 		_end_dialogue()
 
 # Called when the player clicks a choice button in the UI.
@@ -85,10 +90,22 @@ func _end_dialogue() -> void:
 
 	is_dialogue_active = false
 	if is_instance_valid(dialogue_ui):
+		# Disconnect signals before freeing to prevent errors on rapid open/close.
+		if dialogue_ui.exit_request.is_connected(_end_dialogue):
+			dialogue_ui.exit_request.disconnect(_end_dialogue)
+		if dialogue_ui.advance_request.is_connected(_on_advance_request):
+			dialogue_ui.advance_request.disconnect(_on_advance_request)
+		if dialogue_ui.choice_selected.is_connected(_on_choice_selected):
+			dialogue_ui.choice_selected.disconnect(_on_choice_selected)
+		
 		dialogue_ui.queue_free()
 	
 	current_tree = null
 	current_node = null
+	
+	if PlayerManager.player:
+		PlayerManager.player._clear_interactable()
+	# --------------------------
 	
 	get_tree().paused = false
 	dialogue_ended.emit()

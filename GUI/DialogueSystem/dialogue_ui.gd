@@ -2,6 +2,7 @@ class_name DialogueUI extends CanvasLayer
 
 signal advance_request
 signal choice_selected(choice: DialogueChoiceResource)
+signal exit_request
 
 @onready var speaker_label: Label = $Panel/SpeakerLabel
 @onready var dialogue_label: Label = $Panel/MarginContainer/VBoxContainer/DialogueLabel
@@ -35,10 +36,13 @@ func show_node(node: DialogueNodeResource) -> void:
 	else:
 		advance_indicator.show()
 
-# Detects player input to advance the dialogue.
-func _unhandled_input(event: InputEvent) -> void:
-	# Only advance if the advance indicator is visible (meaning no choices are present).
-	if advance_indicator.visible and event.is_action_pressed("interact"):
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		exit_request.emit()
+		get_viewport().set_input_as_handled()
+		return
+
+	if event.is_action_pressed("interact"):
 		advance_request.emit()
 		get_viewport().set_input_as_handled()
 
