@@ -5,6 +5,11 @@ class_name Player extends CharacterBody2D
 @export var hp : int = 10
 @export var invulnerable : bool = false
 
+@export_category("Audio")
+@export var footstep_timer_delay: float = 0.4 # Time between footstep sounds when walking
+var _footstep_timer: float = 0.0
+@onready var main_tilemap: TileMapLayer = get_node_or_null("/LevelGeometry/GroundTiles") # Adjust path if needed
+
 var is_crouched : bool = false:
 	set(value):
 		if is_crouched != value:
@@ -101,6 +106,32 @@ func _clear_interactable() -> void:
 	
 func _physics_process( delta ):
 	move_and_slide()
+	
+	# --- MODIFIED: Footstep Audio Logic ---
+	_footstep_timer -= delta
+	if _footstep_timer <= 0 and velocity.length() > 0 and is_on_floor():
+		# Reset timer based on if player is running
+		var is_running = state_machine.current_state == state_machine.get_node("Run") or state_machine.current_state == state_machine.get_node("CrouchRun")
+		_footstep_timer = footstep_timer_delay / (2.0 if is_running else 1.0)
+		
+		# Check the tile material under the player
+		if not main_tilemap: # Safety check / find tilemap if not found yet
+			main_tilemap = get_node_or_null("/root/Level/GroundTiles") # Adjust path if needed
+			if not main_tilemap: return
+
+		var tile_coords: Vector2i = main_tilemap.local_to_map(global_position)
+		# --- FIX ---
+		# The get_cell_tile_data function in Godot 4 on a TileMapLayer node
+		# only takes one argument: the cell's coordinates (Vector2i).
+		# We no longer need to pass a layer index like '0'.
+		var tile_data: TileData = main_tilemap.get_cell_tile_data(tile_coords)
+		
+		if tile_data:
+			var material_name = tile_data.get_custom_data("footstep_material")
+			if not material_name.is_empty():
+				var footstep_sfx = AudioManager.get_footstep_data(material_name)
+				if footstep_sfx:
+					AudioManager.play_sfx(footstep_sfx, global_position)
 	
 func update_animation_direction() -> void:
 	if direction == Vector2.ZERO:

@@ -1,0 +1,79 @@
+[gd_scene load_steps=16 format=3 uid="uid://d3tbd5o864e5t"]
+
+[ext_resource type="Script" uid="uid://d3tw4qfi2rug" path="res://Scripts/Player/player.gd" id="1_cvnsp"]
+[ext_resource type="SpriteFrames" uid="uid://bdpjxkd6t88qd" path="res://Assets/Animations/player.tres" id="2_8erm5"]
+[ext_resource type="Script" uid="uid://d0jmc1u5oaomp" path="res://Scripts/Player/player_state_machine.gd" id="4_vgqql"]
+[ext_resource type="Script" uid="uid://ctmxowve77rln" path="res://Scripts/Player/States/state_idle.gd" id="5_fkybt"]
+[ext_resource type="Script" uid="uid://b8utrf1joouas" path="res://Scripts/Player/States/state_damaged.gd" id="6_f1ek2"]
+[ext_resource type="Script" uid="uid://3wqe3v862k6t" path="res://Scripts/Player/States/state_walk.gd" id="6_x3wgy"]
+[ext_resource type="Script" uid="uid://d34widsxn5hfv" path="res://Scripts/GeneralNodes/interactions.gd" id="7_8erm5"]
+[ext_resource type="Script" uid="uid://bxepfephpvx6g" path="res://Scripts/Player/player_camera.gd" id="7_f1ek2"]
+[ext_resource type="Script" uid="uid://t2c5au0dcuh8" path="res://Scripts/Player/States/state_run.gd" id="7_tx1dd"]
+[ext_resource type="PackedScene" uid="uid://b3st033b6ln2g" path="res://Scripts/GeneralNodes/HitBox/hitbox.tscn" id="8_f1ek2"]
+[ext_resource type="Script" uid="uid://dmt316e1tt6dn" path="res://Scripts/Player/States/state_crouch.gd" id="8_gymyn"]
+[ext_resource type="Script" uid="uid://c78jxfp8ufm2n" path="res://Scripts/Player/States/state_crouch_run.gd" id="9_pu2lt"]
+[ext_resource type="Script" uid="uid://b8kuib53w0ves" path="res://Scripts/Player/States/state_hidden.gd" id="10_ukyrk"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0iro7"]
+radius = 9.0
+height = 22.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tx1dd"]
+height = 36.0
+
+[node name="Player" type="CharacterBody2D"]
+collision_mask = 16
+motion_mode = 1
+wall_min_slide_angle = 0.174533
+script = ExtResource("1_cvnsp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(3, 19)
+shape = SubResource("CapsuleShape2D_0iro7")
+
+[node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(2, 1)
+sprite_frames = ExtResource("2_8erm5")
+animation = &"crouch_up_right"
+frame_progress = 0.389249
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("4_vgqql")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("5_fkybt")
+
+[node name="Walk" type="Node" parent="StateMachine"]
+script = ExtResource("6_x3wgy")
+
+[node name="Damaged" type="Node" parent="StateMachine"]
+script = ExtResource("6_f1ek2")
+
+[node name="Run" type="Node" parent="StateMachine"]
+script = ExtResource("7_tx1dd")
+
+[node name="Crouch" type="Node" parent="StateMachine"]
+script = ExtResource("8_gymyn")
+
+[node name="CrouchRun" type="Node" parent="StateMachine"]
+script = ExtResource("9_pu2lt")
+
+[node name="Hidden" type="Node" parent="StateMachine"]
+script = ExtResource("10_ukyrk")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("7_f1ek2")
+
+[node name="Audio" type="Node2D" parent="."]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Audio"]
+
+[node name="Interactions" type="Node2D" parent="."]
+script = ExtResource("7_8erm5")
+
+[node name="HitBox" parent="." instance=ExtResource("8_f1ek2")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(3, 10)
+shape = SubResource("CapsuleShape2D_tx1dd")
+debug_color = Color(0.813535, 0.396826, 0.271243, 0.42)

@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 LevelManager="*res://Scripts/Globals/level_manager.gd"
 SceneTransition="*res://Scenes/SceneTransition/scene_transition.tscn"
 PlayerHud="*res://GUI/player_hud.tscn"
+AudioManager="*res://Scripts/Globals/audio_manager.gd"
 DialogueManager="*res://Scripts/Globals/dialogue_manager.gd"
 PlayerManager="*res://Scripts/Globals/player_manager.gd"
 
