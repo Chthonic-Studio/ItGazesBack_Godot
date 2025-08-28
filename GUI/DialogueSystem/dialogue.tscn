@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://yjuifd3yahmk"]
+
+[ext_resource type="Script" uid="uid://bc1gtdjra0kfm" path="res://Scripts/GeneralNodes/Interactables/interactable.gd" id="1_flqm6"]
+[ext_resource type="Resource" uid="uid://dppyfnui4kbh3" path="res://GUI/DialogueSystem/Dialogues/Level1/test_dialogue_tree.tres" id="2_1iehf"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_giwaj"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_owo1s"]
+radius = 40.05
+
+[node name="Dialogue" type="Area2D"]
+script = ExtResource("1_flqm6")
+dialogue_tree = ExtResource("2_1iehf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_giwaj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_owo1s")

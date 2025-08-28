@@ -3,10 +3,10 @@ class_name DialogueUI extends CanvasLayer
 signal advance_request
 signal choice_selected(choice: DialogueChoiceResource)
 
-@onready var speaker_label: Label = %SpeakerLabel
-@onready var dialogue_label: Label = %DialogueLabel
-@onready var choices_box: VBoxContainer = %ChoicesBox
-@onready var advance_indicator: Label = %AdvanceIndicator
+@onready var speaker_label: Label = $Panel/SpeakerLabel
+@onready var dialogue_label: Label = $Panel/MarginContainer/VBoxContainer/DialogueLabel
+@onready var choices_box: VBoxContainer = $Panel/MarginContainer/VBoxContainer/ChoicesBox
+@onready var advance_indicator: Label = $Panel/AdvanceIndicator
 
 # This function is called by DialogueManager to display a dialogue node.
 func show_node(node: DialogueNodeResource) -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://br7074y5eje1b"]
+[gd_scene load_steps=16 format=4 uid="uid://br7074y5eje1b"]
 
 [ext_resource type="PackedScene" uid="uid://d23kam0h3tvtd" path="res://Scenes/ground_tiles.tscn" id="1_asbk5"]
 [ext_resource type="Script" uid="uid://chal8yif3p2fg" path="res://Scenes/Levels/level.gd" id="1_tmsqo"]
@@ -10,12 +10,19 @@
 [ext_resource type="PackedScene" uid="uid://bw7thq4k8hek7" path="res://Scenes/Enemies/CorruptedCrew/roamer.tscn" id="8_0y7fr"]
 [ext_resource type="SpriteFrames" uid="uid://cvvhw3ip7o83" path="res://Scenes/Enemies/CorruptedCrew/SpriteFrames/crew1.tres" id="9_pwe4l"]
 [ext_resource type="PackedScene" uid="uid://cgwxgj4bui4fa" path="res://Scenes/Enemies/CorruptedCrew/patroller.tscn" id="10_fxcoe"]
+[ext_resource type="Script" uid="uid://bc1gtdjra0kfm" path="res://Scripts/GeneralNodes/Interactables/interactable.gd" id="11_giwaj"]
+[ext_resource type="Resource" uid="uid://dppyfnui4kbh3" path="res://GUI/DialogueSystem/Dialogues/Level1/test_dialogue_tree.tres" id="12_oywxn"]
 
 [sub_resource type="Curve2D" id="Curve2D_pwe4l"]
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, -24, -22, 0, 0, 0, 0, -214, 35, 0, 0, 0, 0, -398, -15, 0, 0, 0, 0, -24, -20, 0, 0, 0, 0, -24, -22)
 }
 point_count = 5
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_giwaj"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_owo1s"]
+radius = 40.05
 
 [node name="Level1" type="Node2D"]
 script = ExtResource("1_tmsqo")
@@ -301,3 +308,16 @@ sprite_frames_resource = ExtResource("9_pwe4l")
 position = Vector2(1388, 154.491)
 scale = Vector2(1, 1.38596)
 curve = SubResource("Curve2D_pwe4l")
+
+[node name="Interactables" type="Node2D" parent="."]
+
+[node name="LoreDrop" type="Area2D" parent="Interactables"]
+position = Vector2(1574, 1064)
+script = ExtResource("11_giwaj")
+dialogue_tree = ExtResource("12_oywxn")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Interactables/LoreDrop"]
+sprite_frames = SubResource("SpriteFrames_giwaj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/LoreDrop"]
+shape = SubResource("CircleShape2D_owo1s")
