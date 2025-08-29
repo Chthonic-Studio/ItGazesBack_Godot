@@ -51,17 +51,21 @@ func _ready() -> void:
 # --- Public API ---
 
 ## Plays a one-shot 2D sound effect at a specific location.
-func play_sfx(data: AudioData, position: Vector2) -> void:
+func play_sfx(data: AudioData, position: Vector2, volume_multiplier: float = 1.0) -> void:
 	if not data or data.audio_streams.is_empty():
 		return
 
 	var player = _sfx_player_pool[_sfx_player_index]
 	_sfx_player_index = (_sfx_player_index + 1) % SFX_PLAYER_POOL_SIZE
 
+	# Calculate the final volume in dB, applying the multiplier.
+	var base_volume_db = randf_range(data.min_volume_db, data.max_volume_db)
+	var final_volume_db = base_volume_db + linear_to_db(volume_multiplier)
+
 	player.stream = data.audio_streams.pick_random()
 	player.global_position = position
 	player.pitch_scale = randf_range(data.min_pitch, data.max_pitch)
-	player.volume_db = randf_range(data.min_volume_db, data.max_volume_db)
+	player.volume_db = final_volume_db # Use the final calculated volume.
 	player.bus = data.bus
 	player.play()
 
@@ -91,7 +95,9 @@ func stop_chase(source: Node) -> void:
 	_chase_source_count = max(0, _chase_source_count - 1)
 	if _chase_source_count == 0 and music_player.stream == CHASE_MUSIC:
 		var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-		tween.tween_property(music_player, "volume_db", -80.0, CHASE_FADE_OUT_TIME).finished.connect(music_player.stop)
+		# --- FIX ---
+		# Connect the tween's finished signal to our new reset function.
+		tween.tween_property(music_player, "volume_db", -80.0, CHASE_FADE_OUT_TIME).finished.connect(_on_chase_music_fade_out_finished)
 		_current_music = null
 
 ## Gets the footstep sound data for a given material name.
@@ -100,6 +106,13 @@ func get_footstep_data(material_name: String) -> AudioData:
 
 
 # --- Private Helpers ---
+
+# --- NEW ---
+# This function is called when the chase music has finished fading out.
+func _on_chase_music_fade_out_finished() -> void:
+	music_player.stop()
+	music_player.stream = null # Explicitly clear the stream to allow re-triggering.
+# --- END NEW ---
 
 ## Loads all AudioData resources from a given directory.
 func _load_footstep_data(directory: String) -> void:

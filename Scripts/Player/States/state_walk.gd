@@ -34,6 +34,9 @@ func physics( _delta : float ) -> State:
 	# Check if the animation direction needs to change
 	player.update_animation_direction()
 	
+	# Call the player's footstep audio handler with the walk-specific multiplier.
+	player.handle_footstep_audio(_delta, 0.8)
+	
 	return null
 
 func handle_input( _event : InputEvent ) -> State:

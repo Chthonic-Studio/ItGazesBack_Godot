@@ -14,6 +14,12 @@ func _ready() -> void:
 			var tilemap : TileMapLayer = node
 			var used_rect : Rect2i = tilemap.get_used_rect()
 			
+			# --- NEW ---
+			# If this tilemap is our main ground layer, register it with the LevelManager.
+			if tilemap.name == "GroundTiles":
+				LevelManager.main_tilemap = tilemap
+			# --- END NEW ---
+			
 			# The rect is in tile coordinates, so we convert it to global world coordinates.
 			var world_rect : Rect2 = Rect2(
 				tilemap.map_to_local(used_rect.position),

@@ -38,9 +38,18 @@ func process(_delta: float) -> State:
 	return null
 
 func physics(_delta: float) -> State:
-	var current_speed = crouch_run_speed if Input.is_action_pressed("run") else crouch_walk_speed
+	var is_running = Input.is_action_pressed("run")
+	var current_speed = crouch_run_speed if is_running else crouch_walk_speed
 	player.velocity = player.direction * current_speed
 	player.update_animation_direction()
+	
+	# --- NEW ---
+	# Determine the correct multipliers based on whether the player is crouch-running or crouch-walking.
+	var speed_mod = 1.5 if is_running else 1.2
+	var volume_mod = 0.5 if is_running else 0.2
+	player.handle_footstep_audio(_delta, speed_mod, volume_mod)
+	# --- END NEW ---
+	
 	return null
 	
 func update_animation() -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=4 uid="uid://br7074y5eje1b"]
+[gd_scene load_steps=16 format=4 uid="uid://br7074y5eje1b"]
 
 [ext_resource type="PackedScene" uid="uid://d23kam0h3tvtd" path="res://Scenes/ground_tiles.tscn" id="1_asbk5"]
 [ext_resource type="Script" uid="uid://chal8yif3p2fg" path="res://Scenes/Levels/level.gd" id="1_tmsqo"]
@@ -11,12 +11,21 @@
 [ext_resource type="SpriteFrames" uid="uid://cvvhw3ip7o83" path="res://Scenes/Enemies/CorruptedCrew/SpriteFrames/crew1.tres" id="9_pwe4l"]
 [ext_resource type="PackedScene" uid="uid://cgwxgj4bui4fa" path="res://Scenes/Enemies/CorruptedCrew/patroller.tscn" id="10_fxcoe"]
 [ext_resource type="PackedScene" uid="uid://yjuifd3yahmk" path="res://GUI/DialogueSystem/dialogue.tscn" id="11_fxcoe"]
+[ext_resource type="Texture2D" uid="uid://wpn3k1f7jrx5" path="res://Assets/UI/PNG 27_1_5 Game UI Kit/001.png" id="12_oywxn"]
+[ext_resource type="Shader" uid="uid://du0f0qccc2a3b" path="res://GUI/Shaders/pulse_glow.gdshader" id="13_owo1s"]
 
 [sub_resource type="Curve2D" id="Curve2D_pwe4l"]
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, -24, -22, 0, 0, 0, 0, -214, 35, 0, 0, 0, 0, -398, -15, 0, 0, 0, 0, -24, -20, 0, 0, 0, 0, -24, -22)
 }
 point_count = 5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bwy62"]
+shader = ExtResource("13_owo1s")
+shader_parameter/glow_color = Color(1, 0.9, 0.5, 1)
+shader_parameter/intensity = 0.87
+shader_parameter/spread = 1.4
+shader_parameter/pulse_speed = 1.2
 
 [node name="Level1" type="Node2D"]
 script = ExtResource("1_tmsqo")
@@ -307,3 +316,14 @@ curve = SubResource("Curve2D_pwe4l")
 
 [node name="Dialogue" parent="Interactables" instance=ExtResource("11_fxcoe")]
 position = Vector2(1574, 1064)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Interactables/Dialogue"]
+position = Vector2(-4.25, -4)
+scale = Vector2(0.0695644, 0.0769225)
+texture = ExtResource("12_oywxn")
+
+[node name="Sprite2D" type="Sprite2D" parent="Interactables/Dialogue"]
+material = SubResource("ShaderMaterial_bwy62")
+position = Vector2(-4.62499, -4.5)
+scale = Vector2(0.128261, 0.115385)
+texture = ExtResource("12_oywxn")

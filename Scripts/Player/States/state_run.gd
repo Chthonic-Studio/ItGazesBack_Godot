@@ -28,6 +28,12 @@ func physics(_delta: float) -> State:
 	player.velocity = player.direction * run_speed
 	# This call is correct and needs to stay. It detects when the direction changes.
 	player.update_animation_direction()
+	
+	# --- NEW ---
+	# Call the player's footstep audio handler with the run-specific multiplier.
+	player.handle_footstep_audio(_delta, 1.0)
+	# --- END NEW ---
+	
 	return null
 
 func update_animation() -> void:

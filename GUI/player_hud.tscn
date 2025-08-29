@@ -35,8 +35,9 @@ metadata/_edit_use_anchors_ = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control"]
 layout_mode = 0
-offset_right = 187.0
-offset_bottom = 70.0
+anchor_right = 0.311667
+anchor_bottom = 0.2
+metadata/_edit_use_anchors_ = true
 
 [node name="Brain" type="Sprite2D" parent="Control/HBoxContainer"]
 material = SubResource("ShaderMaterial_qcjjh")
