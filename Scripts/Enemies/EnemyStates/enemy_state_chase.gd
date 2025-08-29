@@ -29,6 +29,8 @@ func enter() -> void:
 	enemy.add_child( pathfinder )
 	_timer = state_aggro_duration
 	
+	AudioManager.start_chase(enemy)
+	
 	# Check if the player exists and is not hidden before chasing.
 	if PlayerManager.player and not PlayerManager.player.is_hidden:
 		_direction = enemy.global_position.direction_to( PlayerManager.player.global_position )
@@ -39,6 +41,8 @@ func enter() -> void:
 		attack_area.monitoring = true
 
 func exit() -> void:
+	AudioManager.stop_chase(enemy)
+	
 	pathfinder.queue_free()
 	if attack_area:
 		attack_area.monitoring = false

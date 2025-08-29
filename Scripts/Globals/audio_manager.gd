@@ -11,7 +11,7 @@ extends Node
 
 # --- Music Configuration ---
 # All configuration is now done directly in the script for simplicity.
-const CHASE_MUSIC: AudioStream = preload("res://Audio/Ambiance/01.Misery_Loves_Company.ogg") # Example path
+const CHASE_MUSIC: AudioStream = preload("res://Audio/Ambiance/ChaseAmbianceLoop.mp3") 
 const CHASE_FADE_IN_TIME: float = 0.5
 const CHASE_FADE_OUT_TIME: float = 3.0
 
@@ -45,7 +45,7 @@ func _ready() -> void:
 		_sfx_player_pool.append(player)
 	
 	# Pre-load footstep data resources for quick lookup.
-	_load_footstep_data("res://Assets/Audio/Footsteps/")
+	_load_footstep_data("res://Audio/SFX/Footsteps/")
 
 
 # --- Public API ---

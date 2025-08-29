@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AudioData" load_steps=3 format=3 uid="uid://bedjs70wtbtmy"]
+
+[ext_resource type="Script" uid="uid://c4ylplhogihip" path="res://Audio/audio_data.gd" id="1_5uh0f"]
+[ext_resource type="AudioStream" uid="uid://dgj5agnyyr8uj" path="res://Audio/SFX/Footsteps/Footsteps_MetalV1_Walk_09.wav" id="1_s8ba6"]
+
+[resource]
+script = ExtResource("1_5uh0f")
+audio_streams = Array[AudioStream]([ExtResource("1_s8ba6")])
+bus = &"SFX"
+min_pitch = 0.9
+max_pitch = 1.1
+min_volume_db = 0.0
+max_volume_db = 0.0
+footstep_material = "metal_tile"
+metadata/_custom_type_script = "uid://c4ylplhogihip"
