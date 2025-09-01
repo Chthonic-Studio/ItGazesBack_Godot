@@ -31,7 +31,7 @@ func physics(_delta: float) -> State:
 	
 	# --- NEW ---
 	# Call the player's footstep audio handler with the run-specific multiplier.
-	player.handle_footstep_audio(_delta, 1.0)
+	player.handle_footstep_audio(_delta, 1.4)
 	# --- END NEW ---
 	
 	return null

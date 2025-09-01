@@ -1,0 +1,61 @@
+[gd_scene load_steps=11 format=3 uid="uid://b0tecpx4p7iy5"]
+
+[ext_resource type="Script" uid="uid://cguwpac7tkmhf" path="res://Scripts/Enemies/enemy.gd" id="1_l1s7i"]
+[ext_resource type="SpriteFrames" uid="uid://cvvhw3ip7o83" path="res://Scenes/Enemies/CorruptedCrew/SpriteFrames/crew1.tres" id="2_siy24"]
+[ext_resource type="PackedScene" uid="uid://b3st033b6ln2g" path="res://Scripts/GeneralNodes/HitBox/hitbox.tscn" id="3_ne02d"]
+[ext_resource type="PackedScene" uid="uid://b7pkk4j416ojd" path="res://Scripts/GeneralNodes/HurtBox/hurtbox.tscn" id="4_t2c7v"]
+[ext_resource type="PackedScene" uid="uid://c2gd3x3rxjmg6" path="res://Scripts/Enemies/vision_area.tscn" id="5_pv6d0"]
+[ext_resource type="Script" uid="uid://bnc4m8uo1gsbx" path="res://Scripts/Enemies/enemy_state_machine.gd" id="6_ojreh"]
+[ext_resource type="Script" uid="uid://247xkfpk5egh" path="res://Scripts/Enemies/EnemyStates/enemy_state_idle.gd" id="7_lf0q0"]
+[ext_resource type="Script" uid="uid://btmr355rka5tl" path="res://Scripts/Enemies/EnemyStates/enemy_state_chase.gd" id="9_1106b"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fqkff"]
+radius = 11.0
+height = 28.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_41ojb"]
+radius = 16.0
+
+[node name="Idler" type="CharacterBody2D"]
+collision_layer = 256
+collision_mask = 16
+motion_mode = 1
+script = ExtResource("1_l1s7i")
+vision_range_standing = 500.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 9)
+shape = SubResource("CapsuleShape2D_fqkff")
+
+[node name="EnemySprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("2_siy24")
+animation = &"run_left"
+
+[node name="HitBox" parent="." instance=ExtResource("3_ne02d")]
+
+[node name="Interactions" type="Node2D" parent="."]
+
+[node name="Hurtbox" parent="Interactions" instance=ExtResource("4_t2c7v")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactions/Hurtbox"]
+shape = SubResource("CircleShape2D_41ojb")
+
+[node name="VisionArea" parent="Interactions" instance=ExtResource("5_pv6d0")]
+collision_mask = 1
+monitorable = false
+
+[node name="EnemyStateMachine" type="Node" parent="."]
+script = ExtResource("6_ojreh")
+
+[node name="Idle" type="Node" parent="EnemyStateMachine" node_paths=PackedStringArray("after_idle_state")]
+script = ExtResource("7_lf0q0")
+after_idle_state = NodePath(".")
+
+[node name="Chase" type="Node" parent="EnemyStateMachine" node_paths=PackedStringArray("vision_area", "attack_area", "next_state")]
+script = ExtResource("9_1106b")
+anim_name = "run"
+chase_speed = 70.0
+state_aggro_duration = 2.0
+vision_area = NodePath("../../Interactions/VisionArea")
+attack_area = NodePath("../../Interactions/Hurtbox")
+next_state = NodePath("../Idle")

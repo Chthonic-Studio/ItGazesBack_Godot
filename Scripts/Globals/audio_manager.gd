@@ -3,13 +3,6 @@ extends Node
 ## AudioManager: A global singleton for managing all audio playback.
 ## Handles playing music, SFX, and managing dynamic audio like chase themes.
 
-# --- How to use ---
-# 1. This script is added to the Autoload list in Project -> Project Settings.
-# 2. From any script, you can now call its functions, e.g.:
-#    AudioManager.play_sfx(my_audio_data_resource, self.global_position)
-#    AudioManager.play_music(my_music_stream)
-
-# --- Music Configuration ---
 # All configuration is now done directly in the script for simplicity.
 const CHASE_MUSIC: AudioStream = preload("res://Audio/Ambiance/ChaseAmbianceLoop.mp3") 
 const CHASE_FADE_IN_TIME: float = 0.5
@@ -31,11 +24,9 @@ var _sfx_player_index: int = 0
 const SFX_PLAYER_POOL_SIZE = 16 # Max simultaneous 2D sounds.
 
 func _ready() -> void:
-	# --- MODIFICATION ---
-	# We now create the music player in code since it's no longer in a scene.
 	music_player = AudioStreamPlayer.new()
 	music_player.name = "MusicPlayer"
-	music_player.bus = "Music" # Assign it to the correct bus.
+	music_player.bus = "Music" 
 	add_child(music_player)
 	
 	# Create a pool of AudioStreamPlayer2D nodes to play spatial SFX.
@@ -46,7 +37,6 @@ func _ready() -> void:
 	
 	# Pre-load footstep data resources for quick lookup.
 	_load_footstep_data("res://Audio/SFX/Footsteps/")
-
 
 # --- Public API ---
 
@@ -104,15 +94,12 @@ func stop_chase(source: Node) -> void:
 func get_footstep_data(material_name: String) -> AudioData:
 	return footstep_data_map.get(material_name, null)
 
-
 # --- Private Helpers ---
 
-# --- NEW ---
 # This function is called when the chase music has finished fading out.
 func _on_chase_music_fade_out_finished() -> void:
 	music_player.stop()
 	music_player.stream = null # Explicitly clear the stream to allow re-triggering.
-# --- END NEW ---
 
 ## Loads all AudioData resources from a given directory.
 func _load_footstep_data(directory: String) -> void:

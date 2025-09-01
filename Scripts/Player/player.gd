@@ -6,11 +6,8 @@ class_name Player extends CharacterBody2D
 @export var invulnerable : bool = false
 
 @export_category("Audio")
-@export var footstep_timer_delay: float = 0.4 # Time between footstep sounds when walking
+@export var footstep_timer_delay: float = 0.8 # Time between footstep sounds when walking
 var _footstep_timer: float = 0.0
-# --- REMOVED ---
-# This direct reference is no longer needed here, we'll get it from LevelManager on demand.
-# @onready var main_tilemap: TileMapLayer = get_node_or_null("/LevelGeometry/GroundTiles")
 
 var is_crouched : bool = false:
 	set(value):
