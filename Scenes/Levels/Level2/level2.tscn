@@ -10,7 +10,7 @@
 script = ExtResource("1_23cxw")
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
-color = Color(1, 1, 1, 0.654902)
+energy = 1.56
 blend_mode = 1
 max_distance = 90.0
 
@@ -34,7 +34,7 @@ tile_map_data = PackedByteArray("AAD/////AAAEAAcAAAD///7/AAAJAAcAAAD///3/AAAJAAc
 [node name="WallLight" parent="Lights" instance=ExtResource("5_aej36")]
 position = Vector2(30, -80)
 light_color = Color(0.509804, 1, 0.45098, 1)
-energy = 3.3
+energy = 2.0
 light_size = 2.6
 flicker_enabled = false
 flicker_speed = 1.0

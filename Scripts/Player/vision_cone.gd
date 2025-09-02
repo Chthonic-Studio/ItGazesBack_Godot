@@ -1,11 +1,11 @@
 # How-to-use:
-# 1. This scene should be a child of the Player.
-# 2. The script will automatically handle rotating to face the mouse.
-class_name VisionCone extends Node2D
+# This scene is a child of the Player. It creates the fog-of-war effect.
+# The root LightOccluder2D casts a full-screen shadow, and its child PointLight2D
+# creates a "hole" in that shadow, revealing the world.
+class_name VisionCone extends LightOccluder2D
 
-# --- REASON FOR CHANGE ---
-# We need a reference to the light node to rotate it, not the root node.
-@onready var light: PointLight2D = $Light
+# We get a reference to the light node to rotate it.
+@onready var player_light: PointLight2D = $PlayerLight
 
 func _process(_delta: float) -> void:
 	# This logic is self-contained. It calculates the direction to the mouse and sets the rotation.
@@ -13,5 +13,4 @@ func _process(_delta: float) -> void:
 	
 	# The texture for the cone points "down" in its local space. We add PI/2 (90 degrees)
 	# to its calculated angle to make it point correctly towards the mouse cursor.
-	# We now apply the rotation to the light node itself.
-	light.rotation = mouse_direction.angle() + (PI / 2.0)
+	player_light.rotation = mouse_direction.angle() + (PI / 2.0)
