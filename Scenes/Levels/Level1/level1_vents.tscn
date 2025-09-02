@@ -144,8 +144,8 @@ is_vertical = true
 position = Vector2(0, 34)
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
-color = Color(0, 0, 0, 0.654902)
-blend_mode = 2
+color = Color(1, 1, 1, 0.654902)
+blend_mode = 1
 max_distance = 90.0
 
 [node name="Lights" type="Node2D" parent="."]

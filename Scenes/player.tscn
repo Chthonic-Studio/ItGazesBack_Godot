@@ -15,7 +15,7 @@
 [ext_resource type="Script" uid="uid://b8kuib53w0ves" path="res://Scripts/Player/States/state_hidden.gd" id="10_ukyrk"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0iro7"]
-radius = 9.0
+radius = 8.0
 height = 22.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tx1dd"]
@@ -29,11 +29,12 @@ script = ExtResource("1_cvnsp")
 footstep_timer_delay = 0.4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(3, 19)
+position = Vector2(4, 17)
 shape = SubResource("CapsuleShape2D_0iro7")
 
 [node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(2, 1)
+scale = Vector2(0.85, 0.85)
 sprite_frames = ExtResource("2_8erm5")
 animation = &"crouch_up_right"
 frame_progress = 0.389249

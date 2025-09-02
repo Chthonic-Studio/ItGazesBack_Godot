@@ -10,8 +10,8 @@
 script = ExtResource("1_23cxw")
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
-color = Color(0, 0, 0, 0.654902)
-blend_mode = 2
+color = Color(1, 1, 1, 0.654902)
+blend_mode = 1
 max_distance = 90.0
 
 [node name="PlayerSpawn" parent="." instance=ExtResource("2_aej36")]

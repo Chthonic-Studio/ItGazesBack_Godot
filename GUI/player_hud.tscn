@@ -21,6 +21,7 @@ shader_parameter/scale_amount = 0.05
 shader_parameter/red_tint_intensity = 0.0
 
 [node name="PlayerHud" type="CanvasLayer"]
+layer = 2
 script = ExtResource("1_1hnfw")
 
 [node name="Control" type="Control" parent="."]

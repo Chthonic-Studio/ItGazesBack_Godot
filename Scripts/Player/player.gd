@@ -64,7 +64,6 @@ func _ready() -> void:
 func _process( delta ):
 	direction = Input.get_vector("left", "right", "up", "down")
 
-	# NEW: Auto‑invalidate stale interactable if we slipped out of its collider.
 	_check_interactable_overlap()
 
 	if Input.is_action_just_pressed("interact") and _available_interactable:
@@ -76,8 +75,6 @@ func _process( delta ):
 				_available_interactable.on_hidden_interact(self)
 			else:
 				_available_interactable.on_interact(self)
-
-# --- NEW HELPERS (minimal prompt safety layer) -----------------
 
 # Returns true only if we are still physically overlapping the interactable's Area2D.
 func _is_still_overlapping(interactable: Interactable) -> bool:
@@ -101,12 +98,11 @@ func _clear_interactable() -> void:
 	_available_interactable = null
 	if _interaction_prompt:
 		_interaction_prompt.hide_prompt()
-
 	
 func _physics_process( delta ):
 	move_and_slide()
 
-func handle_footstep_audio(delta: float, speed_multiplier: float = 1.0, volume_multiplier: float = 1.0) -> void:
+func handle_footstep_audio(delta: float, speed_multiplier: float = 1.0, volume_multiplier: float = 0.5) -> void:
 	_footstep_timer -= delta
 	if _footstep_timer <= 0:
 		# The timer delay is now adjusted by the speed_multiplier from the state.

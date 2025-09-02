@@ -32,9 +32,11 @@ shader_parameter/chromatic_aberration = false
 shader_parameter/aberration_strength = 1.0
 
 [node name="InteractPrompt" type="Node2D"]
+z_index = 5
 script = ExtResource("1_e6rxm")
 
 [node name="Label" type="Label" parent="."]
+z_index = 5
 material = SubResource("ShaderMaterial_l514i")
 offset_right = 40.0
 offset_bottom = 23.0
