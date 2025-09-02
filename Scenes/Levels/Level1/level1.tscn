@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://br7074y5eje1b"]
+[gd_scene load_steps=17 format=4 uid="uid://br7074y5eje1b"]
 
 [ext_resource type="PackedScene" uid="uid://d23kam0h3tvtd" path="res://Scenes/ground_tiles.tscn" id="1_asbk5"]
 [ext_resource type="Script" uid="uid://chal8yif3p2fg" path="res://Scenes/Levels/level.gd" id="1_tmsqo"]
@@ -14,7 +14,6 @@
 [ext_resource type="PackedScene" uid="uid://b0tecpx4p7iy5" path="res://Scenes/Enemies/CorruptedCrew/idler.tscn" id="11_owo1s"]
 [ext_resource type="Texture2D" uid="uid://dq7en86w7svi6" path="res://Assets/Datapad.png" id="13_bwy62"]
 [ext_resource type="Shader" uid="uid://du0f0qccc2a3b" path="res://GUI/Shaders/pulse_glow.gdshader" id="13_owo1s"]
-[ext_resource type="PackedScene" uid="uid://bm6ycd5kfyvr8" path="res://Scenes/obscurity_veil.tscn" id="15_bwy62"]
 
 [sub_resource type="Curve2D" id="Curve2D_pwe4l"]
 _data = {
@@ -335,5 +334,3 @@ material = SubResource("ShaderMaterial_bwy62")
 position = Vector2(-4.99998, -5.00005)
 scale = Vector2(0.22788, 0.222693)
 texture = ExtResource("13_bwy62")
-
-[node name="ObscurityVeil" parent="." instance=ExtResource("15_bwy62")]

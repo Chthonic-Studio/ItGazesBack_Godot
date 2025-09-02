@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://d3tbd5o864e5t"]
+[gd_scene load_steps=17 format=3 uid="uid://d3tbd5o864e5t"]
 
 [ext_resource type="Script" uid="uid://d3tw4qfi2rug" path="res://Scripts/Player/player.gd" id="1_cvnsp"]
 [ext_resource type="SpriteFrames" uid="uid://bdpjxkd6t88qd" path="res://Assets/Animations/player.tres" id="2_8erm5"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://dmt316e1tt6dn" path="res://Scripts/Player/States/state_crouch.gd" id="8_gymyn"]
 [ext_resource type="Script" uid="uid://c78jxfp8ufm2n" path="res://Scripts/Player/States/state_crouch_run.gd" id="9_pu2lt"]
 [ext_resource type="Script" uid="uid://b8kuib53w0ves" path="res://Scripts/Player/States/state_hidden.gd" id="10_ukyrk"]
+[ext_resource type="PackedScene" uid="uid://b4x8y7q6w5r4t" path="res://Scripts/Player/vision_cone.tscn" id="14_7dp3o"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0iro7"]
 radius = 8.0
@@ -79,3 +80,6 @@ script = ExtResource("7_8erm5")
 position = Vector2(3, 10)
 shape = SubResource("CapsuleShape2D_tx1dd")
 debug_color = Color(0.813535, 0.396826, 0.271243, 0.42)
+
+[node name="VisionCone" parent="." instance=ExtResource("14_7dp3o")]
+position = Vector2(0, 26)
