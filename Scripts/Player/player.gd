@@ -58,8 +58,12 @@ func _ready() -> void:
 	# 3. Hook damage & prompt.
 	hitbox.damaged.connect(_take_damage)
 	_interaction_prompt = PROMPT_SCENE.instantiate()
+	# --- CORRECTED LOGIC ---
+	# Set the player itself as the target for the prompt to follow.
+	_interaction_prompt.target_node = self
+	# Add the prompt to the scene tree. Since it's a CanvasLayer, it can be added anywhere.
 	add_child(_interaction_prompt)
-	_interaction_prompt.position.y = -sprite.sprite_frames.get_frame_texture("idle_down", 0).get_height() / 2 - 10
+	# --- END CORRECTION ---
 		
 func _process( delta ):
 	direction = Input.get_vector("left", "right", "up", "down")
@@ -75,6 +79,10 @@ func _process( delta ):
 				_available_interactable.on_hidden_interact(self)
 			else:
 				_available_interactable.on_interact(self)
+	
+	# --- REMOVED ---
+	# All positioning logic has been moved to interaction_prompt.gd
+	# --- END REMOVED ---
 
 # Returns true only if we are still physically overlapping the interactable's Area2D.
 func _is_still_overlapping(interactable: Interactable) -> bool:
