@@ -31,6 +31,7 @@ ambient_light_energy = 2.0
 glow_enabled = true
 glow_bloom = 0.04
 glow_hdr_threshold = 1.18
+fog_enabled = true
 
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 16

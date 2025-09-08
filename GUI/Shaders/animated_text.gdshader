@@ -1,4 +1,5 @@
 shader_type canvas_item;
+render_mode unshaded;
 
 // Jittery motion parameters
 uniform float jitter_strength : hint_range(0.0, 20.0) = 2.0;

@@ -8,7 +8,8 @@ var y_offset: float = -50.0
 @onready var label: Label = $Label
 
 func _ready() -> void:
-	# Hide on ready to prevent appearing at (0,0) for a frame.
+	# Ensure the label is always full bright and not affected by world lighting.
+	label.modulate = Color(1, 1, 1, 1)
 	hide()
 	label.hide()
 
@@ -29,12 +30,13 @@ func _process(_delta: float) -> void:
 		# mathematically correct operation that was missing before.
 		label.global_position = camera.get_transform().affine_inverse() * world_position
 
-## Sets the text of the prompt.
 func set_text(text: String) -> void:
 	label.text = text
+	label.modulate = Color(1, 1, 1, 1) # Re-apply every time to be safe
 
 ## Shows the prompt.
 func show_prompt() -> void:
+	print("Showing prompt!")
 	show()
 	label.show()
 

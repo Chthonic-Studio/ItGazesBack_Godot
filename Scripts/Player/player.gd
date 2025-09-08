@@ -57,12 +57,13 @@ func _ready() -> void:
 	
 	# 3. Hook damage & prompt.
 	hitbox.damaged.connect(_take_damage)
+
+	# Interactable setup
+	await get_tree().process_frames
 	_interaction_prompt = PROMPT_SCENE.instantiate()
-	# --- CORRECTED LOGIC ---
-	# Set the player itself as the target for the prompt to follow.
 	_interaction_prompt.target_node = self
-	# Add the prompt to the scene tree. Since it's a CanvasLayer, it can be added anywhere.
-	add_child(_interaction_prompt)
+	get_tree().root.add_child(_interaction_prompt)
+	
 	# --- END CORRECTION ---
 		
 func _process( delta ):
@@ -200,6 +201,7 @@ func on_interactable_entered(interactable: Interactable):
 	_available_interactable = interactable
 	_interaction_prompt.set_text(interactable.get_prompt_text())
 	_interaction_prompt.show_prompt()
+	print("Interactable entered: ", interactable, " Prompt: ", _interaction_prompt)
 
 func on_interactable_exited(interactable: Interactable):
 	if _available_interactable == interactable:
