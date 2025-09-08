@@ -92,6 +92,7 @@ shape = SubResource("CapsuleShape2D_tx1dd")
 debug_color = Color(0.813535, 0.396826, 0.271243, 0.42)
 
 [node name="VisionCone" parent="." instance=ExtResource("14_7dp3o")]
+position = Vector2(0, 12)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_7dp3o")

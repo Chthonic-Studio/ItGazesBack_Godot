@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://b4x8y7q6w5r4t"]
 
 [ext_resource type="Script" uid="uid://ch561jg8o7fkk" path="res://Scripts/Player/vision_cone.gd" id="1_abcde"]
-[ext_resource type="Texture2D" uid="uid://njbm20jourar" path="res://Assets/FOV.png" id="2_fghij"]
+[ext_resource type="Texture2D" uid="uid://dp0eet7shp7af" path="res://Assets/FOV3.png" id="2_iteac"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_abcde"]
 polygon = PackedVector2Array(-10000, -10000, 10000, -10000, 10000, 10000, -10000, 10000)
@@ -16,5 +16,6 @@ color = Color(1, 1, 1, 0.7)
 energy = 1.5
 shadow_enabled = true
 shadow_color = Color(0, 0, 0, 1)
-texture = ExtResource("2_fghij")
-texture_scale = 5.0
+texture = ExtResource("2_iteac")
+texture_scale = 1.5
+height = 115.0

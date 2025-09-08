@@ -3,7 +3,6 @@ class_name InteractionPrompt extends Node2D
 @onready var label: Label = $Label
 
 func _ready() -> void:
-	# Start hidden.
 	hide()
 
 ## Sets the text of the prompt.
